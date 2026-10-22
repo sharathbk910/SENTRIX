@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 48" fill="none">
+  <!-- Clean Sentinel Shield Emblem -->
+  <g transform="translate(2, 0)">
+    <path d="M24 4L40 10V22C40 32.5 33.2 41.8 24 44C14.8 41.8 8 32.5 8 22V10L24 4Z" fill="#0f172a" stroke="#2563eb" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M24 12L34 16.5V23C34 29.5 29.7 35.5 24 37C18.3 35.5 14 29.5 14 23V16.5L24 12Z" fill="#1e293b" stroke="#60a5fa" stroke-width="2"/>
+    <circle cx="24" cy="24" r="3.5" fill="#3b82f6"/>
+    <circle cx="24" cy="24" r="1.5" fill="#ffffff"/>
+  </g>
+
+  <!-- Enterprise Wordmark -->
+  <g transform="translate(56, 4)">
+    <text x="0" y="24" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="800" font-size="20" letter-spacing="1.5" fill="#ffffff">
+      SENTRIX
+    </text>
+    <rect x="100" y="18" width="4" height="4" fill="#3b82f6" rx="1" />
+    <text x="0" y="36" font-family="'JetBrains Mono', monospace" font-weight="600" font-size="8" letter-spacing="1.8" fill="#94a3b8">
+      AI AGENT SECURITY GATEWAY
+    </text>
+  </g>
+</svg>
