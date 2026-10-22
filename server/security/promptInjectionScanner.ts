@@ -11,7 +11,7 @@ export class PromptInjectionScanner {
   private injectionRules = [
     {
       riskCategory: 'DIRECT_PROMPT_INJECTION' as const,
-      regex: /ignore\s+(?:all\s+)?(?:previous|prior|above|system)\s+(?:instructions|rules|prompts|directions|guidelines)/i,
+      regex: /ignore\s+(?:all\s+)?(?:previous|prior|above|system|safety|security|existing)\s+(?:instructions|rules|prompts|directions|guidelines|policies)/i,
       explanation: 'Adversarial attempt to purge model system context and override safety guidelines.',
       severity: 'CRITICAL' as const
     },

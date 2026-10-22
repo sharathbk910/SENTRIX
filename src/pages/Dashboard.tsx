@@ -7,7 +7,6 @@ import {
   Clock,
   Activity,
   ArrowRight,
-  Play,
   FileKey,
   Terminal,
   AlertTriangle,
@@ -92,58 +91,6 @@ export const Dashboard: React.FC<DashboardProps> = ({
     }
   ];
 
-  const quickScenarios = [
-    {
-      title: '1. Public Catalogue Read',
-      tool: 'file_store:read',
-      resource: 'public_catalogue',
-      expected: 'ALLOW',
-      desc: 'Validates permissive read on public product catalogue.'
-    },
-    {
-      title: '2. Financial Ledger Deletion',
-      tool: 'file_store:delete',
-      resource: 'financial_records_2025',
-      expected: 'BLOCK',
-      desc: 'Attempts destructive delete; ledger is preserved intact.'
-    },
-    {
-      title: '3. Confidential Dossier Export',
-      tool: 'data_transfer:transfer',
-      resource: 'confidential_customer_dossier',
-      expected: 'REQUIRE_APPROVAL',
-      desc: 'Quarantines sensitive transfer with a 10-minute auto-expiry TTL.'
-    },
-    {
-      title: '4. Unknown / Unauthorized Op',
-      tool: 'unregistered_utility:exec',
-      resource: 'internal_cluster_secrets',
-      expected: 'BLOCK (DENY-DEFAULT)',
-      desc: 'Blocks unregistered tools and missing permissions by default.'
-    },
-    {
-      title: '5. Sensitive Data Leak Attempt',
-      tool: 'data_transfer:export',
-      resource: 'confidential_customer_dossier',
-      expected: 'BLOCK (LEAK)',
-      desc: 'Detects and neutralizes secret API keys and credentials before export.'
-    },
-    {
-      title: '6. Prompt Injection Attack',
-      tool: 'file_store:read',
-      resource: 'public_catalogue',
-      expected: 'BLOCK (INJECTION)',
-      desc: 'Catches adversarial "ignore previous instructions" in untrusted text.'
-    },
-    {
-      title: '7. Repeated Denial Anomaly',
-      tool: 'system_shell:exec',
-      resource: 'root_passwords',
-      expected: 'ANOMALY ALERT',
-      desc: 'Triggers 3 repeated blocks to generate a behavior anomaly alert.'
-    }
-  ];
-
   return (
     <div className="space-y-6">
       {/* Page Title & Executive Subtitle */}
@@ -180,7 +127,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
           </span>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-2 pt-1">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 pt-1">
           <button
             onClick={() => onQuickRunScenario(0)}
             disabled={isEvaluating}
@@ -244,7 +191,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
           <button
             onClick={() => onQuickRunScenario(4)}
             disabled={isEvaluating}
-            className="p-2.5 rounded-lg bg-slate-950/80 hover:bg-blue-950/40 border border-slate-800 hover:border-blue-500/50 text-left transition-all group col-span-2 sm:col-span-1"
+            className="p-2.5 rounded-lg bg-slate-950/80 hover:bg-blue-950/40 border border-slate-800 hover:border-blue-500/50 text-left transition-all group"
           >
             <div className="flex items-center justify-between text-[10px] font-mono mb-1">
               <span className="text-slate-400">Step 5</span>
@@ -254,6 +201,36 @@ export const Dashboard: React.FC<DashboardProps> = ({
               Secret Token
             </div>
             <div className="text-[10px] text-slate-500 mt-0.5">Mask & Terminate</div>
+          </button>
+
+          <button
+            onClick={() => onQuickRunScenario(5)}
+            disabled={isEvaluating}
+            className="p-2.5 rounded-lg bg-slate-950/80 hover:bg-purple-950/40 border border-slate-800 hover:border-purple-500/50 text-left transition-all group"
+          >
+            <div className="flex items-center justify-between text-[10px] font-mono mb-1">
+              <span className="text-slate-400">Step 6</span>
+              <span className="text-purple-400 font-bold">INJECTION</span>
+            </div>
+            <div className="text-xs font-semibold text-white group-hover:text-purple-300 transition-colors">
+              Prompt Override
+            </div>
+            <div className="text-[10px] text-slate-500 mt-0.5">Adversarial Defense</div>
+          </button>
+
+          <button
+            onClick={() => onQuickRunScenario(6)}
+            disabled={isEvaluating}
+            className="p-2.5 rounded-lg bg-slate-950/80 hover:bg-amber-950/40 border border-slate-800 hover:border-amber-500/50 text-left transition-all group col-span-2 sm:col-span-1"
+          >
+            <div className="flex items-center justify-between text-[10px] font-mono mb-1">
+              <span className="text-slate-400">Step 7</span>
+              <span className="text-amber-400 font-bold">ANOMALY</span>
+            </div>
+            <div className="text-xs font-semibold text-white group-hover:text-amber-300 transition-colors">
+              Denial Burst
+            </div>
+            <div className="text-[10px] text-slate-500 mt-0.5">Tripwire Alert</div>
           </button>
         </div>
       </div>
@@ -296,50 +273,6 @@ export const Dashboard: React.FC<DashboardProps> = ({
             </div>
           );
         })}
-      </div>
-
-      {/* Verification Scenarios */}
-      <div className="enterprise-card p-5 space-y-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-sm font-semibold text-white">Policy Verification Benchmarks</h2>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Execute verifiable agent tool calls to confirm deterministic enforcement.
-            </p>
-          </div>
-          <span className="text-xs text-slate-500 font-mono">Server Enforced</span>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-          {quickScenarios.map((sc, idx) => (
-            <div
-              key={idx}
-              className="p-3.5 rounded-lg border border-slate-800 bg-slate-900/50 hover:border-slate-700 transition-colors flex flex-col justify-between space-y-3"
-            >
-              <div>
-                <div className="flex items-center justify-between gap-1 mb-1.5">
-                  <span className="text-xs font-semibold text-slate-200">{sc.title}</span>
-                  <span className="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">
-                    {sc.expected}
-                  </span>
-                </div>
-                <p className="text-xs text-slate-400 leading-relaxed">{sc.desc}</p>
-                <div className="mt-2 text-[10px] font-mono text-slate-500 truncate">
-                  {sc.tool} &rarr; {sc.resource}
-                </div>
-              </div>
-
-              <button
-                onClick={() => onQuickRunScenario(idx)}
-                disabled={isEvaluating}
-                className="w-full py-1.5 px-3 rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-medium text-slate-200 flex items-center justify-center gap-1.5 transition-colors disabled:opacity-50"
-              >
-                <Play className="w-3 h-3 fill-current text-blue-400" />
-                <span>Run Test</span>
-              </button>
-            </div>
-          ))}
-        </div>
       </div>
 
       {/* Recent Activity Feed */}

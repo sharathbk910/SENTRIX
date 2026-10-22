@@ -196,7 +196,12 @@ apiRouter.post('/alerts/:id/resolve', (req: Request, res: Response) => {
 apiRouter.get('/emergency-pause', (_req: Request, res: Response) => {
   try {
     const pauseState = securityGatewayService.getEmergencyPauseState();
-    res.json({ success: true, pauseState });
+    res.json({
+      success: true,
+      pauseState,
+      isPaused: pauseState.isPaused,
+      paused: pauseState.isPaused
+    });
   } catch (error: any) {
     res.status(500).json({ success: false, error: error.message });
   }
