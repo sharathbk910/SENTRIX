@@ -68,6 +68,12 @@ npm run dev
 
 Open your browser at **`http://localhost:5173/`**.
 
+### 4. Run Automated Security & Compliance Test Suite
+```bash
+npm test
+```
+*(Runs all 14 end-to-end security test benchmarks verifying 100% compliance)*
+
 ---
 
 ## 5. How to Demonstrate All 6 Features
