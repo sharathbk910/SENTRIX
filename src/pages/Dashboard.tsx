@@ -158,10 +158,102 @@ export const Dashboard: React.FC<DashboardProps> = ({
         <div className="flex items-center gap-2.5">
           <button
             onClick={() => onRouteChange('playground')}
-            className="px-3.5 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold flex items-center gap-1.5 transition-colors"
+            className="px-3.5 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-sm"
           >
             <span>Open Policy Gateway</span>
             <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      </div>
+
+      {/* Usability Upgrade: 30-Second Quick Start Guide for Evaluators */}
+      <div className="enterprise-card p-5 bg-gradient-to-r from-blue-950/30 via-slate-900 to-slate-900 border-blue-500/30 space-y-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <span className="flex h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
+            <h2 className="text-xs font-bold text-blue-400 uppercase tracking-wider">
+              Quick-Start Evaluator Tour (1-Click Test Scenarios)
+            </h2>
+          </div>
+          <span className="text-[11px] text-slate-400 font-mono">
+            Click any button to test live server-side enforcement
+          </span>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-2 pt-1">
+          <button
+            onClick={() => onQuickRunScenario(0)}
+            disabled={isEvaluating}
+            className="p-2.5 rounded-lg bg-slate-950/80 hover:bg-emerald-950/40 border border-slate-800 hover:border-emerald-500/50 text-left transition-all group"
+          >
+            <div className="flex items-center justify-between text-[10px] font-mono mb-1">
+              <span className="text-slate-400">Step 1</span>
+              <span className="text-emerald-400 font-bold">ALLOW</span>
+            </div>
+            <div className="text-xs font-semibold text-white group-hover:text-emerald-300 transition-colors">
+              Public Catalogue
+            </div>
+            <div className="text-[10px] text-slate-500 mt-0.5">Permissive Read</div>
+          </button>
+
+          <button
+            onClick={() => onQuickRunScenario(1)}
+            disabled={isEvaluating}
+            className="p-2.5 rounded-lg bg-slate-950/80 hover:bg-rose-950/40 border border-slate-800 hover:border-rose-500/50 text-left transition-all group"
+          >
+            <div className="flex items-center justify-between text-[10px] font-mono mb-1">
+              <span className="text-slate-400">Step 2</span>
+              <span className="text-rose-400 font-bold">BLOCK</span>
+            </div>
+            <div className="text-xs font-semibold text-white group-hover:text-rose-300 transition-colors">
+              Delete Ledger
+            </div>
+            <div className="text-[10px] text-slate-500 mt-0.5">Immutable Defense</div>
+          </button>
+
+          <button
+            onClick={() => onQuickRunScenario(2)}
+            disabled={isEvaluating}
+            className="p-2.5 rounded-lg bg-slate-950/80 hover:bg-amber-950/40 border border-slate-800 hover:border-amber-500/50 text-left transition-all group"
+          >
+            <div className="flex items-center justify-between text-[10px] font-mono mb-1">
+              <span className="text-slate-400">Step 3</span>
+              <span className="text-amber-300 font-bold">APPROVAL</span>
+            </div>
+            <div className="text-xs font-semibold text-white group-hover:text-amber-200 transition-colors">
+              Transfer Dossier
+            </div>
+            <div className="text-[10px] text-slate-500 mt-0.5">10m Expiry TTL</div>
+          </button>
+
+          <button
+            onClick={() => onQuickRunScenario(3)}
+            disabled={isEvaluating}
+            className="p-2.5 rounded-lg bg-slate-950/80 hover:bg-rose-950/40 border border-slate-800 hover:border-rose-500/50 text-left transition-all group"
+          >
+            <div className="flex items-center justify-between text-[10px] font-mono mb-1">
+              <span className="text-slate-400">Step 4</span>
+              <span className="text-rose-400 font-bold">DENY-DEFAULT</span>
+            </div>
+            <div className="text-xs font-semibold text-white group-hover:text-rose-300 transition-colors">
+              Unknown Tool
+            </div>
+            <div className="text-[10px] text-slate-500 mt-0.5">Zero Permissive Leak</div>
+          </button>
+
+          <button
+            onClick={() => onQuickRunScenario(4)}
+            disabled={isEvaluating}
+            className="p-2.5 rounded-lg bg-slate-950/80 hover:bg-blue-950/40 border border-slate-800 hover:border-blue-500/50 text-left transition-all group col-span-2 sm:col-span-1"
+          >
+            <div className="flex items-center justify-between text-[10px] font-mono mb-1">
+              <span className="text-slate-400">Step 5</span>
+              <span className="text-blue-400 font-bold">DLP LEAK</span>
+            </div>
+            <div className="text-xs font-semibold text-white group-hover:text-blue-300 transition-colors">
+              Secret Token
+            </div>
+            <div className="text-[10px] text-slate-500 mt-0.5">Mask & Terminate</div>
           </button>
         </div>
       </div>

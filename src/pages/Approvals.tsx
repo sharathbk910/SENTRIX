@@ -8,7 +8,9 @@ import {
   Shield,
   Hourglass,
   TimerOff,
-  ArrowRight
+  ArrowRight,
+  Sparkles,
+  HelpCircle
 } from 'lucide-react';
 import { RouteId } from '../components/layout/Sidebar';
 
@@ -17,6 +19,7 @@ interface ApprovalsProps {
   onDecision: (id: string, decision: 'APPROVE' | 'REJECT', reviewer?: string) => Promise<void>;
   onSimulateExpiry: (id: string) => Promise<void>;
   onRouteChange: (route: RouteId) => void;
+  onGenerateSampleApproval?: () => Promise<void>;
   isLoading: boolean;
 }
 
@@ -25,6 +28,7 @@ export const Approvals: React.FC<ApprovalsProps> = ({
   onDecision,
   onSimulateExpiry,
   onRouteChange,
+  onGenerateSampleApproval,
   isLoading
 }) => {
   const [activeTab, setActiveTab] = useState<'PENDING' | 'RESOLVED' | 'EXPIRED'>('PENDING');
@@ -71,41 +75,57 @@ export const Approvals: React.FC<ApprovalsProps> = ({
           </p>
         </div>
 
-        {/* Tab Toggle */}
-        <div className="flex p-1 rounded-lg bg-slate-900 border border-slate-800 text-xs font-medium self-start sm:self-auto">
-          <button
-            onClick={() => setActiveTab('PENDING')}
-            className={`px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 ${
-              activeTab === 'PENDING'
-                ? 'bg-slate-800 text-white font-semibold'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            <Clock className="w-3.5 h-3.5 text-amber-400" />
-            <span>Pending ({pendingList.length})</span>
-          </button>
-          <button
-            onClick={() => setActiveTab('RESOLVED')}
-            className={`px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 ${
-              activeTab === 'RESOLVED'
-                ? 'bg-slate-800 text-white font-semibold'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Resolved ({resolvedList.length})</span>
-          </button>
-          <button
-            onClick={() => setActiveTab('EXPIRED')}
-            className={`px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 ${
-              activeTab === 'EXPIRED'
-                ? 'bg-slate-800 text-white font-semibold'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            <TimerOff className="w-3.5 h-3.5 text-rose-400" />
-            <span>Expired ({expiredList.length})</span>
-          </button>
+        <div className="flex flex-wrap items-center gap-2.5 self-start sm:self-auto">
+          {onGenerateSampleApproval && (
+            <button
+              onClick={async () => {
+                await onGenerateSampleApproval();
+                setActiveTab('PENDING');
+              }}
+              disabled={isLoading}
+              className="px-3 py-1.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-sm disabled:opacity-50"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <span>+ Sample Quarantine Action (1-Click)</span>
+            </button>
+          )}
+
+          {/* Tab Toggle */}
+          <div className="flex p-1 rounded-lg bg-slate-900 border border-slate-800 text-xs font-medium">
+            <button
+              onClick={() => setActiveTab('PENDING')}
+              className={`px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 ${
+                activeTab === 'PENDING'
+                  ? 'bg-slate-800 text-white font-semibold'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <Clock className="w-3.5 h-3.5 text-amber-400" />
+              <span>Pending ({pendingList.length})</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('RESOLVED')}
+              className={`px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 ${
+                activeTab === 'RESOLVED'
+                  ? 'bg-slate-800 text-white font-semibold'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Resolved ({resolvedList.length})</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('EXPIRED')}
+              className={`px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 ${
+                activeTab === 'EXPIRED'
+                  ? 'bg-slate-800 text-white font-semibold'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <TimerOff className="w-3.5 h-3.5 text-rose-400" />
+              <span>Expired ({expiredList.length})</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -143,13 +163,28 @@ export const Approvals: React.FC<ApprovalsProps> = ({
               : 'Past approval and rejection records appear here.'}
           </p>
           {activeTab === 'PENDING' && (
-            <button
-              onClick={() => onRouteChange('playground')}
-              className="px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs text-slate-200 inline-flex items-center gap-1.5 transition-colors"
-            >
-              <span>Test Restricted Transfer in Policy Gateway</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+            <div className="flex flex-wrap items-center justify-center gap-2.5 pt-1">
+              {onGenerateSampleApproval && (
+                <button
+                  onClick={async () => {
+                    await onGenerateSampleApproval();
+                    setActiveTab('PENDING');
+                  }}
+                  disabled={isLoading}
+                  className="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold text-xs inline-flex items-center gap-1.5 transition-colors shadow-lg shadow-amber-500/10 disabled:opacity-50"
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Generate Sample Quarantine Action (1-Click)</span>
+                </button>
+              )}
+              <button
+                onClick={() => onRouteChange('playground')}
+                className="px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs text-slate-200 inline-flex items-center gap-1.5 transition-colors"
+              >
+                <span>Test in Policy Gateway</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
           )}
         </div>
       ) : (
@@ -278,6 +313,34 @@ export const Approvals: React.FC<ApprovalsProps> = ({
           ))}
         </div>
       )}
+
+      {/* Educational Guidance Section */}
+      <div className="p-4 rounded-xl bg-slate-900/40 border border-slate-800 space-y-2 text-xs text-slate-400">
+        <div className="font-semibold text-slate-300 flex items-center gap-2">
+          <HelpCircle className="w-4 h-4 text-blue-400" />
+          <span>How Quarantine & Human-in-the-Loop Works in SENTRIX</span>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+          <div className="p-3 rounded-lg bg-slate-950 border border-slate-800/80 space-y-1">
+            <strong className="text-amber-400 font-semibold">1. Autonomous Interception</strong>
+            <p className="text-[11px] text-slate-400 leading-relaxed">
+              High-risk actions (e.g. data_transfer on confidential files) trigger policy POL-003 and are held in quarantine with a 10-minute TTL.
+            </p>
+          </div>
+          <div className="p-3 rounded-lg bg-slate-950 border border-slate-800/80 space-y-1">
+            <strong className="text-emerald-400 font-semibold">2. Authorize & Execute</strong>
+            <p className="text-[11px] text-slate-400 leading-relaxed">
+              Authorizing executes the tool under supervisor authority and records cryptographically signed audit logs with destination verification.
+            </p>
+          </div>
+          <div className="p-3 rounded-lg bg-slate-950 border border-slate-800/80 space-y-1">
+            <strong className="text-rose-400 font-semibold">3. Reject or Auto-Expire</strong>
+            <p className="text-[11px] text-slate-400 leading-relaxed">
+              Rejecting cancels the tool immediately. If no decision occurs within 10m, the token expires server-side and replay attempts are blocked.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

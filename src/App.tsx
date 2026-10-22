@@ -8,6 +8,7 @@ import { Approvals } from './pages/Approvals';
 import { Alerts } from './pages/Alerts';
 import { Audit } from './pages/Audit';
 import { Settings } from './pages/Settings';
+import { CommandPalette } from './components/common/CommandPalette';
 import { api } from './lib/api';
 import {
   ActionPayload,
@@ -43,6 +44,18 @@ export function App() {
   const [isResetting, setIsResetting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [activePlaygroundPayload, setActivePlaygroundPayload] = useState<ActionPayload | null>(null);
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+
+  useEffect(() => {
+    const handleGlobalKey = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsCommandPaletteOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleGlobalKey);
+    return () => window.removeEventListener('keydown', handleGlobalKey);
+  }, []);
 
   const showToast = (type: Toast['type'], title: string, message: string) => {
     const id = Math.random().toString(36).substring(2, 9);
@@ -290,6 +303,63 @@ export function App() {
     }
   };
 
+  const handleGenerateSampleApproval = async () => {
+    setIsLoading(true);
+    try {
+      const payload: ActionPayload = {
+        tool: 'data_transfer',
+        operation: 'transfer',
+        resource: 'confidential_customer_dossier',
+        agent_id: 'agent-compliance-exporter',
+        description: 'Dispatch confidential enterprise customer dossiers to external compliance server'
+      };
+      await api.evaluateAction(payload);
+      await refreshAllData();
+      showToast('warning', 'SAMPLE QUARANTINE CREATED', 'Restricted operation placed in Approval Queue with 10m auto-expiry TTL.');
+    } catch (error: any) {
+      showToast('error', 'FAILED TO GENERATE SAMPLE', error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGenerateSampleAlert = async () => {
+    setIsLoading(true);
+    try {
+      const payload: ActionPayload = {
+        tool: 'system_shell',
+        operation: 'exec',
+        resource: 'root_passwords_fuzz',
+        agent_id: 'agent-fuzzer-probe',
+        description: 'Automated fuzzing burst probe against internal system credential paths'
+      };
+      await Promise.all([
+        api.evaluateAction(payload),
+        api.evaluateAction(payload),
+        api.evaluateAction(payload)
+      ]);
+      await refreshAllData();
+      showToast('error', 'ANOMALY ALERT TRIGGERED', 'Agent accumulated >=3 blocked attempts within sliding window threshold.');
+    } catch (error: any) {
+      showToast('error', 'FAILED TO TRIGGER ANOMALY', error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleTestPolicy = (policy: Policy) => {
+    const payload: ActionPayload = {
+      tool: policy.tool,
+      operation: policy.operation,
+      resource: policy.resource_pattern.replace('*', 'test_resource'),
+      agent_id: 'agent-policy-tester',
+      description: `Testing policy rule ${policy.id} (${policy.name})`
+    };
+    setActivePlaygroundPayload(payload);
+    setCurrentRoute('playground');
+    showToast('info', 'POLICY LOADED IN GATEWAY', `Ready to evaluate ${policy.id} against gateway.`);
+  };
+
   const pendingCount = approvals.filter((a) => a.status === 'PENDING').length;
   const activeAlertsCount = alerts.filter((a) => a.status === 'ACTIVE').length;
 
@@ -302,7 +372,18 @@ export function App() {
         onToggleEmergencyPause={handleToggleEmergencyPause}
         onResetDemo={handleResetDemo}
         onRouteChange={setCurrentRoute}
+        onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
         isResetting={isResetting}
+      />
+
+      {/* Global Command Palette (Ctrl + K) */}
+      <CommandPalette
+        isOpen={isCommandPaletteOpen}
+        onClose={() => setIsCommandPaletteOpen(false)}
+        onRouteChange={setCurrentRoute}
+        onQuickRunScenario={handleQuickRunScenario}
+        onToggleEmergencyPause={handleToggleEmergencyPause}
+        isPaused={pauseState?.isPaused || false}
       />
 
       {/* Main Body */}
@@ -341,6 +422,7 @@ export function App() {
               policies={policies}
               conflicts={conflicts}
               onTogglePolicy={handleTogglePolicy}
+              onTestPolicy={handleTestPolicy}
               isLoading={isLoading}
             />
           )}
@@ -351,6 +433,7 @@ export function App() {
               onDecision={handleDecision}
               onSimulateExpiry={handleSimulateExpiry}
               onRouteChange={setCurrentRoute}
+              onGenerateSampleApproval={handleGenerateSampleApproval}
               isLoading={isLoading}
             />
           )}
@@ -360,6 +443,7 @@ export function App() {
               alerts={alerts}
               onResolveAlert={handleResolveAlert}
               onRouteChange={setCurrentRoute}
+              onGenerateSampleAlert={handleGenerateSampleAlert}
               isLoading={isLoading}
             />
           )}

@@ -8,7 +8,9 @@ import {
   User,
   Check,
   Activity,
-  ArrowRight
+  ArrowRight,
+  Sparkles,
+  HelpCircle
 } from 'lucide-react';
 import { RouteId } from '../components/layout/Sidebar';
 
@@ -16,6 +18,7 @@ interface AlertsProps {
   alerts: BehaviorAnomalyAlert[];
   onResolveAlert: (id: string) => Promise<void>;
   onRouteChange: (route: RouteId) => void;
+  onGenerateSampleAlert?: () => Promise<void>;
   isLoading: boolean;
 }
 
@@ -23,6 +26,7 @@ export const Alerts: React.FC<AlertsProps> = ({
   alerts,
   onResolveAlert,
   onRouteChange,
+  onGenerateSampleAlert,
   isLoading
 }) => {
   const [filter, setFilter] = useState<'ALL' | 'ACTIVE' | 'RESOLVED'>('ACTIVE');
@@ -45,40 +49,56 @@ export const Alerts: React.FC<AlertsProps> = ({
           </p>
         </div>
 
-        {/* Filter Tabs */}
-        <div className="flex p-1 rounded-lg bg-slate-900 border border-slate-800 text-xs font-medium self-start sm:self-auto">
-          <button
-            onClick={() => setFilter('ACTIVE')}
-            className={`px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 ${
-              filter === 'ACTIVE'
-                ? 'bg-slate-800 text-white font-semibold'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
-            <span>Active ({activeCount})</span>
-          </button>
-          <button
-            onClick={() => setFilter('RESOLVED')}
-            className={`px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 ${
-              filter === 'RESOLVED'
-                ? 'bg-slate-800 text-white font-semibold'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Resolved ({alerts.length - activeCount})</span>
-          </button>
-          <button
-            onClick={() => setFilter('ALL')}
-            className={`px-3 py-1.5 rounded-md transition-colors ${
-              filter === 'ALL'
-                ? 'bg-slate-800 text-white font-semibold'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            <span>All ({alerts.length})</span>
-          </button>
+        <div className="flex flex-wrap items-center gap-2.5 self-start sm:self-auto">
+          {onGenerateSampleAlert && (
+            <button
+              onClick={async () => {
+                await onGenerateSampleAlert();
+                setFilter('ACTIVE');
+              }}
+              disabled={isLoading}
+              className="px-3 py-1.5 rounded-lg bg-rose-500/15 hover:bg-rose-500/25 border border-rose-500/30 text-rose-300 text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-sm disabled:opacity-50"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-rose-400" />
+              <span>⚡ Trigger Test Anomaly Spike (1-Click)</span>
+            </button>
+          )}
+
+          {/* Filter Tabs */}
+          <div className="flex p-1 rounded-lg bg-slate-900 border border-slate-800 text-xs font-medium">
+            <button
+              onClick={() => setFilter('ACTIVE')}
+              className={`px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 ${
+                filter === 'ACTIVE'
+                  ? 'bg-slate-800 text-white font-semibold'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
+              <span>Active ({activeCount})</span>
+            </button>
+            <button
+              onClick={() => setFilter('RESOLVED')}
+              className={`px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 ${
+                filter === 'RESOLVED'
+                  ? 'bg-slate-800 text-white font-semibold'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Resolved ({alerts.length - activeCount})</span>
+            </button>
+            <button
+              onClick={() => setFilter('ALL')}
+              className={`px-3 py-1.5 rounded-md transition-colors ${
+                filter === 'ALL'
+                  ? 'bg-slate-800 text-white font-semibold'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <span>All ({alerts.length})</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -103,13 +123,28 @@ export const Alerts: React.FC<AlertsProps> = ({
               : 'Alerts you mark as resolved will appear here.'}
           </p>
           {filter === 'ACTIVE' && (
-            <button
-              onClick={() => onRouteChange('playground')}
-              className="px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs text-slate-200 inline-flex items-center gap-1.5 transition-colors"
-            >
-              <span>Test in Policy Gateway</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+            <div className="flex flex-wrap items-center justify-center gap-2.5 pt-1">
+              {onGenerateSampleAlert && (
+                <button
+                  onClick={async () => {
+                    await onGenerateSampleAlert();
+                    setFilter('ACTIVE');
+                  }}
+                  disabled={isLoading}
+                  className="px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs inline-flex items-center gap-1.5 transition-colors shadow-lg shadow-rose-600/10 disabled:opacity-50"
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Trigger Sample Anomaly Spike (1-Click)</span>
+                </button>
+              )}
+              <button
+                onClick={() => onRouteChange('playground')}
+                className="px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs text-slate-200 inline-flex items-center gap-1.5 transition-colors"
+              >
+                <span>Test in Policy Gateway</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
           )}
         </div>
       ) : (
@@ -202,6 +237,34 @@ export const Alerts: React.FC<AlertsProps> = ({
           ))}
         </div>
       )}
+
+      {/* Educational Guidance Section */}
+      <div className="p-4 rounded-xl bg-slate-900/40 border border-slate-800 space-y-2 text-xs text-slate-400">
+        <div className="font-semibold text-slate-300 flex items-center gap-2">
+          <HelpCircle className="w-4 h-4 text-blue-400" />
+          <span>How Statistical Anomaly Detection Works in SENTRIX</span>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+          <div className="p-3 rounded-lg bg-slate-950 border border-slate-800/80 space-y-1">
+            <strong className="text-blue-400 font-semibold">1. Sliding Window Tracking</strong>
+            <p className="text-[11px] text-slate-400 leading-relaxed">
+              Tracks all denied and blocked actions per agent across a rolling 5-minute sliding window.
+            </p>
+          </div>
+          <div className="p-3 rounded-lg bg-slate-950 border border-slate-800/80 space-y-1">
+            <strong className="text-amber-400 font-semibold">2. Threshold Tripwire (&ge;3 Denials)</strong>
+            <p className="text-[11px] text-slate-400 leading-relaxed">
+              If an autonomous agent accumulates &ge;3 denials within 5 minutes, an active anomaly alert is flagged immediately.
+            </p>
+          </div>
+          <div className="p-3 rounded-lg bg-slate-950 border border-slate-800/80 space-y-1">
+            <strong className="text-emerald-400 font-semibold">3. SecOps Resolution</strong>
+            <p className="text-[11px] text-slate-400 leading-relaxed">
+              SecOps personnel inspect the affected agent, determine if rogue behavior is present, take administrative action, or resolve the alert.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

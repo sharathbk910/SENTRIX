@@ -31,3 +31,7 @@ dist-ssr
 
 # Scratch test files
 scratch/
+
+# Large local media recordings (user downloads)
+*.mp4
+*.webm

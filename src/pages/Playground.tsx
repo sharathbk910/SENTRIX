@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ActionPayload, EvaluationResponse } from '../types';
 import { DecisionBadge, ExecutionBadge } from '../components/common/Badge';
 import {
@@ -176,6 +176,17 @@ export const Playground: React.FC<PlaygroundProps> = ({
     }
   };
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        handleSubmit(e as any);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [form, jsonInput, mode]);
+
   const copyJson = (text: string) => {
     navigator.clipboard.writeText(text);
     setCopied(true);
@@ -195,34 +206,67 @@ export const Playground: React.FC<PlaygroundProps> = ({
       {/* Preset Selector */}
       <div className="enterprise-card p-4 space-y-3">
         <div className="flex items-center justify-between text-xs text-slate-400 font-medium">
-          <span>Verification Benchmark Scenarios</span>
-          <span className="text-[11px] text-slate-500">Click to populate request</span>
+          <span>Verification Benchmark Scenarios (1-Click Run Available)</span>
+          <span className="text-[11px] text-slate-500 font-mono">Press Ctrl + Enter to Evaluate</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-          {PRESETS.map((preset, idx) => (
-            <button
-              key={idx}
-              type="button"
-              onClick={() => applyPreset(preset)}
-              className="p-3 rounded-lg bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800 hover:border-slate-700 text-left transition-colors flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex items-center justify-between gap-1 mb-1">
-                  <span className="text-xs font-semibold text-slate-200">
-                    {preset.label}
-                  </span>
-                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">
-                    {preset.expected}
-                  </span>
+          {PRESETS.map((preset, idx) => {
+            const isSelected = form.tool === preset.payload.tool && form.operation === preset.payload.operation && form.resource === preset.payload.resource;
+            return (
+              <div
+                key={idx}
+                className={`p-3 rounded-lg border text-left transition-all flex flex-col justify-between ${
+                  isSelected
+                    ? 'bg-blue-950/20 border-blue-500/60 shadow-md'
+                    : 'bg-slate-900/60 hover:bg-slate-800/80 border-slate-800 hover:border-slate-700'
+                }`}
+              >
+                <div onClick={() => applyPreset(preset)} className="cursor-pointer">
+                  <div className="flex items-center justify-between gap-1 mb-1">
+                    <span className="text-xs font-semibold text-slate-200">
+                      {preset.label}
+                    </span>
+                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">
+                      {preset.expected}
+                    </span>
+                  </div>
+                  <div className="text-[11px] text-slate-400">{preset.tag}</div>
+                  <div className="text-[10px] font-mono text-slate-500 mt-1 truncate">
+                    {preset.payload.tool} &bull; {preset.payload.operation} &rarr; {preset.payload.resource}
+                  </div>
                 </div>
-                <div className="text-[11px] text-slate-400">{preset.tag}</div>
+
+                <div className="mt-2.5 pt-2 border-t border-slate-800/80 flex items-center justify-between">
+                  <button
+                    type="button"
+                    onClick={() => applyPreset(preset)}
+                    className="text-[11px] text-slate-400 hover:text-white transition-colors"
+                  >
+                    Load into Form
+                  </button>
+
+                  <button
+                    type="button"
+                    disabled={isEvaluating}
+                    onClick={async () => {
+                      applyPreset(preset);
+                      try {
+                        const res = await onEvaluate(preset.payload);
+                        setLastResult(res);
+                      } catch (err) {
+                        console.error(err);
+                      }
+                    }}
+                    className="px-2.5 py-1 rounded bg-blue-600/20 hover:bg-blue-600/35 text-blue-300 hover:text-white border border-blue-500/40 text-[11px] font-semibold flex items-center gap-1 transition-colors disabled:opacity-50"
+                  >
+                    <Sparkles className="w-3 h-3 text-blue-400" />
+                    <span>Run Now ⚡</span>
+                  </button>
+                </div>
               </div>
-              <div className="text-[10px] font-mono text-slate-500 mt-2 truncate">
-                {preset.payload.tool} &bull; {preset.payload.operation}
-              </div>
-            </button>
-          ))}
+            );
+          })}
         </div>
       </div>
 
@@ -388,15 +432,17 @@ export const Playground: React.FC<PlaygroundProps> = ({
               </div>
             )}
 
-            <div className="pt-2 flex items-center justify-between border-t border-slate-800">
-              <span className="text-[11px] text-slate-500">
-                10-Step Deterministic Gateway Pipeline
-              </span>
+            <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-t border-slate-800">
+              <div className="flex items-center gap-1.5 text-[11px] text-slate-400">
+                <span>Shortcut:</span>
+                <kbd className="px-1.5 py-0.5 rounded bg-slate-900 border border-slate-700 font-mono text-[10px] text-slate-300">Ctrl + Enter</kbd>
+                <span>to evaluate proposal</span>
+              </div>
 
               <button
                 type="submit"
                 disabled={isEvaluating}
-                className="px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold flex items-center gap-2 transition-colors disabled:opacity-50"
+                className="px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
               >
                 <Send className={`w-3.5 h-3.5 ${isEvaluating ? 'animate-spin' : ''}`} />
                 <span>{isEvaluating ? 'Evaluating...' : 'Evaluate & Enforce'}</span>
@@ -512,6 +558,40 @@ export const Playground: React.FC<PlaygroundProps> = ({
                   <p className="text-slate-300 leading-relaxed font-sans">
                     {lastResult.reason}
                   </p>
+                </div>
+
+                {/* Contextual Quick Actions based on verdict */}
+                <div className="space-y-2 pt-1">
+                  {lastResult.decision === 'REQUIRE_APPROVAL' && (
+                    <button
+                      type="button"
+                      onClick={() => onRouteChange('approvals')}
+                      className="w-full py-2 px-3 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 text-xs font-semibold flex items-center justify-center gap-2 transition-colors shadow-sm"
+                    >
+                      <Clock className="w-3.5 h-3.5" />
+                      <span>👉 Action Quarantined! Open Approval Queue</span>
+                    </button>
+                  )}
+
+                  {lastResult.securitySignals?.anomalyAlert && (
+                    <button
+                      type="button"
+                      onClick={() => onRouteChange('alerts')}
+                      className="w-full py-2 px-3 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/40 text-rose-300 text-xs font-semibold flex items-center justify-center gap-2 transition-colors shadow-sm"
+                    >
+                      <AlertTriangle className="w-3.5 h-3.5" />
+                      <span>👉 Anomaly Alert Raised! Open Security Alerts</span>
+                    </button>
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={() => onRouteChange('audit')}
+                    className="w-full py-1.5 px-3 rounded-lg bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 text-slate-300 text-xs font-medium flex items-center justify-center gap-1.5 transition-colors"
+                  >
+                    <span>Inspect this transaction in Compliance Audit Trail</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
+                  </button>
                 </div>
 
                 {/* Raw JSON */}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Logo } from '../common/Logo';
 import { SystemStats, EmergencyPauseState } from '../../types';
-import { Shield, Activity, RefreshCw, AlertOctagon, Check, X, Database } from 'lucide-react';
+import { Shield, Activity, RefreshCw, AlertOctagon, Check, X, Database, HelpCircle, BookOpen, CheckCircle2, ArrowRight, Search } from 'lucide-react';
 import { RouteId } from './Sidebar';
 
 interface NavbarProps {
@@ -10,6 +10,7 @@ interface NavbarProps {
   onToggleEmergencyPause: (pause: boolean, reason?: string) => Promise<void>;
   onResetDemo: () => void;
   onRouteChange: (route: RouteId) => void;
+  onOpenCommandPalette?: () => void;
   isResetting: boolean;
 }
 
@@ -19,9 +20,11 @@ export const Navbar: React.FC<NavbarProps> = ({
   onToggleEmergencyPause,
   onResetDemo,
   onRouteChange,
+  onOpenCommandPalette,
   isResetting
 }) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showGuideModal, setShowGuideModal] = useState(false);
   const [confirmReason, setConfirmReason] = useState('');
   const [isTogglingPause, setIsTogglingPause] = useState(false);
 
@@ -88,6 +91,30 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           )}
 
+          {/* Quick Search / Command Palette Trigger */}
+          {onOpenCommandPalette && (
+            <button
+              onClick={onOpenCommandPalette}
+              className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700/80 text-xs text-slate-300 hover:text-white transition-colors"
+              title="Open Command Palette (Ctrl+K)"
+            >
+              <Search className="w-3.5 h-3.5 text-slate-400" />
+              <span className="hidden sm:inline text-slate-400">Quick Actions</span>
+              <kbd className="hidden md:inline px-1.5 py-0.5 rounded bg-slate-900 border border-slate-700 text-[10px] font-mono text-slate-400">
+                Ctrl K
+              </kbd>
+            </button>
+          )}
+
+          {/* Quick Guide for Judges / Evaluators */}
+          <button
+            onClick={() => setShowGuideModal(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600/15 hover:bg-blue-600/25 border border-blue-500/30 text-xs font-semibold text-blue-400 hover:text-blue-300 transition-colors"
+          >
+            <HelpCircle className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Demo Guide</span>
+          </button>
+
           {/* Emergency Pause Button */}
           <button
             onClick={() => setShowConfirmModal(true)}
@@ -113,6 +140,84 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
         </div>
       </header>
+
+      {/* Evaluator Demo Guide Modal */}
+      {showGuideModal && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-slate-900 rounded-xl border border-slate-800 max-w-lg w-full p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div className="flex items-center gap-2 text-white font-bold text-base">
+                <BookOpen className="w-5 h-5 text-blue-400" />
+                <span>SENTRIX &mdash; 60-Second Evaluator Guide</span>
+              </div>
+              <button
+                onClick={() => setShowGuideModal(false)}
+                className="text-slate-400 hover:text-white p-1"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-3 text-xs text-slate-300">
+              <p className="leading-relaxed text-slate-300">
+                SENTRIX is a <strong>deterministic AI Agent Security Gateway</strong> that intercepts and evaluates autonomous tool calls before execution.
+              </p>
+
+              <div className="space-y-2 pt-1">
+                <div className="p-3 rounded-lg bg-slate-950 border border-slate-800 space-y-1">
+                  <div className="font-semibold text-emerald-400 flex items-center gap-1.5">
+                    <span>1. Safe Operations (ALLOW)</span>
+                  </div>
+                  <p className="text-slate-400 text-[11px]">
+                    Go to <strong>Policy Gateway</strong> &rarr; Select <strong>Preset 1 (Read Catalogue)</strong> &rarr; Click <strong>Evaluate & Enforce</strong>. Results in real catalogue data.
+                  </p>
+                </div>
+
+                <div className="p-3 rounded-lg bg-slate-950 border border-slate-800 space-y-1">
+                  <div className="font-semibold text-rose-400 flex items-center gap-1.5">
+                    <span>2. Destructive Actions (BLOCK)</span>
+                  </div>
+                  <p className="text-slate-400 text-[11px]">
+                    Select <strong>Preset 2 (Delete Ledger)</strong> &rarr; Blocked server-side. Protected financial data remains 100% intact.
+                  </p>
+                </div>
+
+                <div className="p-3 rounded-lg bg-slate-950 border border-slate-800 space-y-1">
+                  <div className="font-semibold text-amber-300 flex items-center gap-1.5">
+                    <span>3. Quarantine & Human Approval</span>
+                  </div>
+                  <p className="text-slate-400 text-[11px]">
+                    Select <strong>Preset 3 (Transfer Dossier)</strong> &rarr; Quarantined with 10m TTL. Jump to <strong>Approval Queue</strong> to authorize or reject.
+                  </p>
+                </div>
+
+                <div className="p-3 rounded-lg bg-slate-950 border border-slate-800 space-y-1">
+                  <div className="font-semibold text-blue-300 flex items-center gap-1.5">
+                    <span>4. DLP Secrets & Prompt Injections</span>
+                  </div>
+                  <p className="text-slate-400 text-[11px]">
+                    Select <strong>Preset 5 & 6</strong> to see outbound API tokens masked and adversarial document overrides neutralized.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-2 border-t border-slate-800 flex items-center justify-between">
+              <span className="text-[11px] text-slate-500 font-mono">14 Automated Tests passing (npm test)</span>
+              <button
+                onClick={() => {
+                  setShowGuideModal(false);
+                  onRouteChange('playground');
+                }}
+                className="px-3.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs flex items-center gap-1.5 transition-colors"
+              >
+                <span>Launch Gateway Workbench</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Confirmation Modal */}
       {showConfirmModal && (

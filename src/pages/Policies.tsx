@@ -9,13 +9,16 @@ import {
   Layers,
   CheckCircle,
   ToggleLeft,
-  ToggleRight
+  ToggleRight,
+  Sparkles,
+  ArrowRight
 } from 'lucide-react';
 
 interface PoliciesProps {
   policies: Policy[];
   conflicts: PolicyConflictWarning[];
   onTogglePolicy: (id: string) => Promise<void>;
+  onTestPolicy?: (policy: Policy) => void;
   isLoading: boolean;
 }
 
@@ -23,6 +26,7 @@ export const Policies: React.FC<PoliciesProps> = ({
   policies,
   conflicts,
   onTogglePolicy,
+  onTestPolicy,
   isLoading
 }) => {
   const [filter, setFilter] = useState<'ALL' | PolicyDecision>('ALL');
@@ -225,8 +229,20 @@ export const Policies: React.FC<PoliciesProps> = ({
                 </p>
               </div>
 
-              {/* Toggle Status Action */}
-              <div className="flex items-center gap-3 shrink-0 self-start lg:self-center">
+              {/* Actions */}
+              <div className="flex items-center gap-2.5 shrink-0 self-start lg:self-center">
+                {onTestPolicy && (
+                  <button
+                    type="button"
+                    onClick={() => onTestPolicy(policy)}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600/15 hover:bg-blue-600/25 border border-blue-500/30 text-blue-400 hover:text-blue-300 text-xs font-medium transition-colors"
+                    title="Load this policy into the Gateway Console to test live evaluation"
+                  >
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>Test in Gateway</span>
+                  </button>
+                )}
+
                 <button
                   type="button"
                   onClick={() => onTogglePolicy(policy.id)}
