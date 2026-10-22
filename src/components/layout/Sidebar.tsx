@@ -7,8 +7,7 @@ import {
   FileText,
   Sliders,
   AlertTriangle,
-  Lock,
-  ChevronRight
+  Lock
 } from 'lucide-react';
 
 export type RouteId = 'dashboard' | 'playground' | 'policies' | 'approvals' | 'alerts' | 'audit' | 'settings';
@@ -55,7 +54,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       id: 'approvals' as RouteId,
       label: 'Approval Queue',
       icon: UserCheck,
-      badge: pendingApprovalsCount > 0 ? `${pendingApprovalsCount} Pending` : null,
+      badge: pendingApprovalsCount > 0 ? `${pendingApprovalsCount}` : null,
       badgeAlert: pendingApprovalsCount > 0,
       description: 'Human-in-the-Loop Clearance'
     },
@@ -63,7 +62,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       id: 'alerts' as RouteId,
       label: 'Security Alerts',
       icon: AlertTriangle,
-      badge: activeAlertsCount > 0 ? `${activeAlertsCount} Active` : null,
+      badge: activeAlertsCount > 0 ? `${activeAlertsCount}` : null,
       badgeCritical: activeAlertsCount > 0,
       description: 'Behavior Anomaly Detection'
     },
@@ -82,6 +81,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
       description: 'Storage & System Health'
     }
   ];
+
+  const allItems = [...platformNav, ...governanceNav];
 
   const renderNavGroup = (title: string, items: typeof platformNav) => (
     <div>
@@ -129,22 +130,58 @@ export const Sidebar: React.FC<SidebarProps> = ({
   );
 
   return (
-    <aside className="w-60 border-r border-slate-800 bg-slate-900/60 flex flex-col justify-between shrink-0 min-h-[calc(100vh-4rem)]">
-      <div className="p-4 space-y-6">
-        {renderNavGroup('Platform', platformNav)}
-        {renderNavGroup('Governance & Audit', governanceNav)}
+    <>
+      {/* Mobile Horizontal Navigation Bar (< md) */}
+      <div className="md:hidden flex overflow-x-auto p-2 bg-slate-900 border-b border-slate-800 gap-1.5 scrollbar-none shrink-0 sticky top-14 z-20">
+        {allItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = currentRoute === item.id;
+          return (
+            <button
+              key={item.id}
+              onClick={() => onRouteChange(item.id)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap flex items-center gap-1.5 transition-colors shrink-0 ${
+                isActive
+                  ? 'bg-blue-600/20 text-blue-400 border border-blue-500/40 font-semibold'
+                  : 'bg-slate-800/60 text-slate-400 border border-slate-700/60 hover:text-white'
+              }`}
+            >
+              <Icon className="w-3.5 h-3.5" />
+              <span>{item.label}</span>
+              {item.badge && (
+                <span className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${
+                  (item as any).badgeCritical
+                    ? 'bg-rose-500 text-white'
+                    : (item as any).badgeAlert
+                    ? 'bg-amber-500 text-black font-bold'
+                    : 'bg-slate-700 text-slate-300'
+                }`}>
+                  {item.badge}
+                </span>
+              )}
+            </button>
+          );
+        })}
       </div>
 
-      {/* Clean Enterprise Trust Footer */}
-      <div className="p-4 border-t border-slate-800 bg-slate-900/40">
-        <div className="flex items-center gap-2 text-xs text-slate-400">
-          <Lock className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-          <div className="leading-tight">
-            <div className="font-medium text-slate-300">Enforcement Engine</div>
-            <div className="text-[11px] text-slate-500">Deterministic Zero-Trust</div>
+      {/* Desktop Vertical Sidebar (>= md) */}
+      <aside className="hidden md:flex md:w-60 border-r border-slate-800 bg-slate-900/60 flex-col justify-between shrink-0 min-h-[calc(100vh-4rem)]">
+        <div className="p-4 space-y-6">
+          {renderNavGroup('Platform', platformNav)}
+          {renderNavGroup('Governance & Audit', governanceNav)}
+        </div>
+
+        {/* Clean Enterprise Trust Footer */}
+        <div className="p-4 border-t border-slate-800 bg-slate-900/40">
+          <div className="flex items-center gap-2 text-xs text-slate-400">
+            <Lock className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+            <div className="leading-tight">
+              <div className="font-medium text-slate-300">Enforcement Engine</div>
+              <div className="text-[11px] text-slate-500">Deterministic Zero-Trust</div>
+            </div>
           </div>
         </div>
-      </div>
-    </aside>
+      </aside>
+    </>
   );
 };

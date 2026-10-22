@@ -65,7 +65,19 @@ const PRESETS: Array<{ label: string; payload: ActionPayload; expected: string; 
     }
   },
   {
-    label: '4. Sensitive Data Leak Attempt',
+    label: '4. Unknown / Unauthorized Op',
+    expected: 'BLOCK (DENY-DEFAULT)',
+    tag: 'Deny By Default',
+    payload: {
+      tool: 'unregistered_utility',
+      operation: 'arbitrary_exec',
+      resource: 'internal_cluster_secrets',
+      agent_id: 'agent-rogue-actor',
+      description: 'Attempt unauthorized execution of an unregistered tool operation on internal cluster'
+    }
+  },
+  {
+    label: '5. Sensitive Data Leak Attempt',
     expected: 'BLOCK (LEAK)',
     tag: 'DLP Secret Scanner',
     payload: {
@@ -74,7 +86,7 @@ const PRESETS: Array<{ label: string; payload: ActionPayload; expected: string; 
       resource: 'confidential_customer_dossier',
       agent_id: 'agent-data-sync',
       leak_policy: 'BLOCK',
-      description: 'Export customer archive accompanied by live Stripe credentials and DB passwords',
+      description: 'Export customer archive accompanied by secret API credentials and DB passwords',
       parameters: {
         destinationVault: 'https://external-dump.corp',
         apiToken: 'sk_test_51MockCustomerExportKey998877',
@@ -83,7 +95,7 @@ const PRESETS: Array<{ label: string; payload: ActionPayload; expected: string; 
     }
   },
   {
-    label: '5. Prompt Injection Attack',
+    label: '6. Prompt Injection Attack',
     expected: 'BLOCK (INJECTION)',
     tag: 'Adversarial Prompt',
     payload: {
@@ -96,7 +108,7 @@ const PRESETS: Array<{ label: string; payload: ActionPayload; expected: string; 
     }
   },
   {
-    label: '6. Fuzzing Anomaly Burst',
+    label: '7. Fuzzing Anomaly Burst',
     expected: 'BLOCK (ANOMALY)',
     tag: 'Sliding Window',
     payload: {

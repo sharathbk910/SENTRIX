@@ -246,12 +246,19 @@ export function App() {
         description: 'Dispatch confidential enterprise customer dossiers to external compliance server'
       },
       {
+        tool: 'unregistered_utility',
+        operation: 'arbitrary_exec',
+        resource: 'internal_cluster_secrets',
+        agent_id: 'agent-rogue-actor',
+        description: 'Attempt unauthorized execution of an unregistered tool operation on internal cluster'
+      },
+      {
         tool: 'data_transfer',
         operation: 'export',
         resource: 'confidential_customer_dossier',
         agent_id: 'agent-exfiltrator',
         leak_policy: 'BLOCK',
-        description: 'Export customer archive accompanied by live Stripe credentials and DB passwords',
+        description: 'Export customer archive accompanied by secret API credentials and DB passwords',
         parameters: {
           destinationVault: 'https://external-dump.corp',
           apiToken: 'sk_test_51MockCustomerExportKey998877',

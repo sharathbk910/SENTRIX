@@ -115,21 +115,28 @@ export const Dashboard: React.FC<DashboardProps> = ({
       desc: 'Quarantines sensitive transfer with a 10-minute auto-expiry TTL.'
     },
     {
-      title: '4. Sensitive Data Leak Attempt',
+      title: '4. Unknown / Unauthorized Op',
+      tool: 'unregistered_utility:exec',
+      resource: 'internal_cluster_secrets',
+      expected: 'BLOCK (DENY-DEFAULT)',
+      desc: 'Blocks unregistered tools and missing permissions by default.'
+    },
+    {
+      title: '5. Sensitive Data Leak Attempt',
       tool: 'data_transfer:export',
       resource: 'confidential_customer_dossier',
       expected: 'BLOCK (LEAK)',
       desc: 'Detects and neutralizes secret API keys and credentials before export.'
     },
     {
-      title: '5. Prompt Injection Attack',
+      title: '6. Prompt Injection Attack',
       tool: 'file_store:read',
       resource: 'public_catalogue',
       expected: 'BLOCK (INJECTION)',
       desc: 'Catches adversarial "ignore previous instructions" in untrusted text.'
     },
     {
-      title: '6. Repeated Denial Anomaly',
+      title: '7. Repeated Denial Anomaly',
       tool: 'system_shell:exec',
       resource: 'root_passwords',
       expected: 'ANOMALY ALERT',
