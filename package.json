@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && esbuild server/app.ts --bundle --platform=node --format=esm --outfile=api/index.js --external:express --external:cors",
+    "build:api": "esbuild server/app.ts --bundle --platform=node --format=esm --outfile=api/index.js --external:express --external:cors",
     "preview": "vite preview",
     "server": "tsx server/index.ts",
     "test": "node tests/audit.test.mjs"
@@ -28,6 +29,7 @@
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
+    "esbuild": "^0.25.0",
     "postcss": "^8.4.49",
     "puppeteer-core": "^25.16.0",
     "tailwindcss": "^3.4.17",
