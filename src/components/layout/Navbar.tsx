@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Logo } from '../common/Logo';
 import { SystemStats, EmergencyPauseState } from '../../types';
-import { Shield, Activity, RefreshCw, AlertOctagon, Check, X, Database, HelpCircle, BookOpen, CheckCircle2, ArrowRight, Search } from 'lucide-react';
+import { Shield, Activity, RefreshCw, AlertOctagon, Check, X, HelpCircle, BookOpen, CheckCircle2, ArrowRight, Search } from 'lucide-react';
 import { RouteId } from './Sidebar';
 
 interface NavbarProps {
@@ -73,12 +73,6 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         <div className="flex items-center gap-3">
-          {/* Supabase Storage Indicator */}
-          <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800/60 border border-slate-700/60 text-xs text-slate-300">
-            <Database className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="text-slate-400">Database:</span>
-            <span className="font-medium text-emerald-400">Connected</span>
-          </div>
 
           {/* Anomaly Alerts Indicator */}
           {(stats?.activeAlertsCount ?? 0) > 0 && (

@@ -75,10 +75,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
     },
     {
       id: 'settings' as RouteId,
-      label: 'Settings & Database',
+      label: 'Security Posture',
       icon: Sliders,
       badge: null,
-      description: 'Storage & System Health'
+      description: 'Enforcement & Isolation'
     }
   ];
 
