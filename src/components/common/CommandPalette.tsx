@@ -63,7 +63,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     { id: 'alerts', label: 'Security Anomaly Alerts', icon: ShieldAlert },
     { id: 'policies', label: 'Security Policies & Rule Controls', icon: ShieldCheck },
     { id: 'audit', label: 'Compliance Audit Trail', icon: FileText },
-    { id: 'settings', label: 'System Configuration & Supabase SQL', icon: Settings }
+    { id: 'settings', label: 'System Configuration & Database Posture', icon: Settings }
   ];
 
   const scenarios = [

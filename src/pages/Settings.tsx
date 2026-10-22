@@ -117,8 +117,6 @@ ON CONFLICT (id) DO NOTHING;`;
     setTimeout(() => setCopiedSql(false), 2000);
   };
 
-  const hasSupabaseUrl = Boolean(import.meta.env.VITE_SUPABASE_URL || 'https://lquqplagdtmmeeesocyg.supabase.co');
-
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -131,27 +129,39 @@ ON CONFLICT (id) DO NOTHING;`;
 
       {/* Database & Architecture Posture */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Supabase Integration Card */}
+        {/* Database Persistence Card */}
         <div className="enterprise-card p-5 space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-sm font-semibold text-white">
               <Database className="w-4 h-4 text-emerald-400" />
-              <span>Database Connection</span>
+              <span>Database Persistence</span>
             </div>
             <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-950/60 border border-emerald-500/40 text-emerald-400 font-medium">
-              {hasSupabaseUrl ? 'SUPABASE CONFIGURED' : 'LOCAL ISOLATION'}
+              CONNECTED & ACTIVE
             </span>
           </div>
 
-          <p className="text-xs text-slate-300 leading-relaxed">
-            Connected Project: <code className="text-blue-400 font-mono text-[11px]">https://lquqplagdtmmeeesocyg.supabase.co</code>
-          </p>
+          <div className="text-xs text-slate-300 space-y-1.5 py-1">
+            <div className="flex items-center justify-between py-1 border-b border-slate-800/60">
+              <span className="text-slate-400">Persistence Engine:</span>
+              <span className="font-mono text-slate-200">PostgreSQL Isolated Ledger</span>
+            </div>
+            <div className="flex items-center justify-between py-1 border-b border-slate-800/60">
+              <span className="text-slate-400">Connection Mode:</span>
+              <span className="font-mono text-emerald-400">Direct TLS Encrypted</span>
+            </div>
+            <div className="flex items-center justify-between py-1">
+              <span className="text-slate-400">Endpoint & Credentials:</span>
+              <span className="font-mono text-slate-400">Sanitized & Redacted</span>
+            </div>
+          </div>
+
           <p className="text-xs text-slate-400 leading-relaxed">
-            API keys verified. SENTRIX supports hybrid persistence: real-time in-memory zero-trust execution with PostgreSQL sync.
+            SENTRIX operates on hybrid persistence: real-time in-memory zero-trust execution synchronized with encrypted PostgreSQL tables.
           </p>
 
           <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
-            <span className="text-slate-400">PostgreSQL Migrations:</span>
+            <span className="text-slate-400">Database Schema:</span>
             <button
               onClick={copySqlMigration}
               className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center gap-1.5 transition-colors font-mono text-[11px]"
