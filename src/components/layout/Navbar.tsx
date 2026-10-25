@@ -1,7 +1,20 @@
 import React, { useState } from 'react';
 import { Logo } from '../common/Logo';
 import { SystemStats, EmergencyPauseState } from '../../types';
-import { Shield, Activity, RefreshCw, AlertOctagon, Check, X, HelpCircle, BookOpen, CheckCircle2, ArrowRight, Search } from 'lucide-react';
+import {
+  Shield,
+  Activity,
+  RefreshCw,
+  AlertOctagon,
+  Check,
+  X,
+  Menu,
+  HelpCircle,
+  BookOpen,
+  CheckCircle2,
+  ArrowRight,
+  Search
+} from 'lucide-react';
 import { RouteId } from './Sidebar';
 
 interface NavbarProps {
@@ -12,6 +25,8 @@ interface NavbarProps {
   onRouteChange: (route: RouteId) => void;
   onOpenCommandPalette?: () => void;
   isResetting: boolean;
+  onToggleMobileMenu?: () => void;
+  isMobileMenuOpen?: boolean;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -21,7 +36,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   onResetDemo,
   onRouteChange,
   onOpenCommandPalette,
-  isResetting
+  isResetting,
+  onToggleMobileMenu,
+  isMobileMenuOpen = false
 }) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showGuideModal, setShowGuideModal] = useState(false);
@@ -45,23 +62,39 @@ export const Navbar: React.FC<NavbarProps> = ({
     <>
       {/* Persistent Emergency Pause Banner across all pages */}
       {isPaused && (
-        <div className="bg-rose-600 text-white px-4 py-2 text-xs font-medium flex items-center justify-between sticky top-0 z-50">
+        <div className="bg-rose-600 text-white px-3 sm:px-4 py-2 text-xs font-medium flex items-center justify-between sticky top-0 z-50">
           <div className="flex items-center gap-2 max-w-4xl truncate">
             <AlertOctagon className="w-4 h-4 shrink-0" />
-            <span>Emergency Agent Pause Active &mdash; All autonomous tool operations are currently halted by administrator.</span>
+            <span className="truncate">Emergency Pause Active &mdash; Agent operations halted.</span>
           </div>
           <button
             onClick={() => setShowConfirmModal(true)}
-            className="px-3 py-1 rounded bg-black/80 hover:bg-black text-white text-xs font-semibold shrink-0"
+            className="px-2.5 py-1 rounded bg-black/80 hover:bg-black text-white text-xs font-semibold shrink-0"
           >
-            Resume Gateway
+            Resume
           </button>
         </div>
       )}
 
-      <header className="h-16 border-b border-[#1C1D22] bg-[#08080A]/90 backdrop-blur-md px-4 lg:px-6 flex items-center justify-between sticky top-0 z-40">
-        <div className="flex items-center gap-6">
-          <Logo size="md" />
+      <header className="h-16 border-b border-[#1C1D22] bg-[#08080A]/90 backdrop-blur-md px-3 sm:px-4 lg:px-6 flex items-center justify-between sticky top-0 z-40">
+        <div className="flex items-center gap-2.5 sm:gap-6">
+          {/* Mobile Menu Hamburger Toggle */}
+          {onToggleMobileMenu && (
+            <button
+              onClick={onToggleMobileMenu}
+              className="md:hidden p-2 rounded-[6px] bg-[#121317] hover:bg-[#17181F] border border-[#1C1D22] text-[#E2E3E9] focus:outline-none transition-colors"
+              aria-label="Toggle Navigation Menu"
+            >
+              {isMobileMenuOpen ? (
+                <X className="w-4 h-4 text-[#CC9166]" />
+              ) : (
+                <Menu className="w-4 h-4 text-[#CC9166]" />
+              )}
+            </button>
+          )}
+
+          <Logo size="md" className="hidden sm:flex" />
+          <Logo size="sm" className="sm:hidden" />
 
           {/* Clean Environment Indicator */}
           <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-[#121317] border border-[#1C1D22] text-xs text-[#C7C9D1]">
@@ -72,15 +105,16 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-1.5 sm:gap-2.5">
           {/* Anomaly Alerts Indicator */}
           {(stats?.activeAlertsCount ?? 0) > 0 && (
             <button
               onClick={() => onRouteChange('alerts')}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-[6px] bg-rose-500/[0.08] border border-rose-500/30 text-rose-300 text-xs font-medium hover:bg-rose-500/15 transition-colors"
+              className="flex items-center gap-1 sm:gap-1.5 px-2 py-1 rounded-[6px] bg-rose-500/[0.08] border border-rose-500/30 text-rose-300 text-xs font-medium hover:bg-rose-500/15 transition-colors"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
-              <span>{stats?.activeAlertsCount} Alerts</span>
+              <span className="hidden sm:inline">{stats?.activeAlertsCount} Alerts</span>
+              <span className="sm:hidden">{stats?.activeAlertsCount}</span>
             </button>
           )}
 
@@ -88,12 +122,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           {onOpenCommandPalette && (
             <button
               onClick={onOpenCommandPalette}
-              className="flex items-center gap-2 px-2.5 py-1.5 rounded-[6px] bg-[#121317] hover:bg-[#17181F] border border-[#1C1D22] hover:border-[#2E3038] text-xs text-[#9194A1] hover:text-[#E2E3E9] transition-colors"
+              className="flex items-center gap-1.5 p-2 sm:px-2.5 sm:py-1.5 rounded-[6px] bg-[#121317] hover:bg-[#17181F] border border-[#1C1D22] hover:border-[#2E3038] text-xs text-[#9194A1] hover:text-[#E2E3E9] transition-colors"
               title="Open Command Palette (Ctrl+K)"
             >
               <Search className="w-3.5 h-3.5 text-[#9194A1]" />
               <span className="hidden sm:inline text-[#9194A1]">Quick Actions</span>
-              <kbd className="hidden md:inline px-1.5 py-0.5 rounded-[4px] bg-[#040406] border border-[#1C1D22] text-[10px] font-mono text-[#9194A1]">
+              <kbd className="hidden lg:inline px-1.5 py-0.5 rounded-[4px] bg-[#040406] border border-[#1C1D22] text-[10px] font-mono text-[#9194A1]">
                 Ctrl K
               </kbd>
             </button>
@@ -102,7 +136,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* System Architecture Guide Modal */}
           <button
             onClick={() => setShowGuideModal(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-[6px] bg-[#CC9166]/10 hover:bg-[#CC9166]/20 border border-[#CC9166]/30 text-xs font-semibold text-[#CC9166] transition-colors"
+            className="flex items-center gap-1.5 p-2 sm:px-3 sm:py-1.5 rounded-[6px] bg-[#CC9166]/10 hover:bg-[#CC9166]/20 border border-[#CC9166]/30 text-xs font-semibold text-[#CC9166] transition-colors"
+            title="System Guide"
           >
             <HelpCircle className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">System Guide</span>
@@ -111,14 +146,14 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Emergency Pause Button */}
           <button
             onClick={() => setShowConfirmModal(true)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[6px] border text-xs font-semibold transition-all ${
+            className={`flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-[6px] border text-xs font-semibold transition-all ${
               isPaused
                 ? 'bg-rose-600 text-white border-rose-500 hover:bg-rose-700'
                 : 'bg-[#121317] hover:bg-rose-950/30 text-[#C7C9D1] hover:text-rose-300 border-[#1C1D22] hover:border-rose-500/40'
             }`}
           >
             <AlertOctagon className="w-3.5 h-3.5 text-rose-400" />
-            <span>{isPaused ? 'Resume Service' : 'Emergency Stop'}</span>
+            <span>{isPaused ? 'Resume' : 'Emergency Stop'}</span>
           </button>
 
           {/* Reset Sandbox Button */}
@@ -126,10 +161,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={onResetDemo}
             disabled={isResetting}
             title="Reset sandbox data and approvals"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-[6px] bg-[#121317] hover:bg-[#17181F] border border-[#1C1D22] hover:border-[#2E3038] text-xs text-[#9194A1] hover:text-[#E2E3E9] transition-colors disabled:opacity-50"
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-[6px] bg-[#121317] hover:bg-[#17181F] border border-[#1C1D22] hover:border-[#2E3038] text-xs text-[#9194A1] hover:text-[#E2E3E9] transition-colors disabled:opacity-50"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isResetting ? 'animate-spin' : ''}`} />
-            <span className="hidden sm:inline">Reset Sandbox</span>
+            <span className="hidden lg:inline">Reset Sandbox</span>
           </button>
         </div>
       </header>

@@ -22,7 +22,18 @@ import {
   PolicyConflictWarning,
   SystemStats
 } from './types';
-import { CheckCircle2, AlertOctagon, AlertTriangle, Info, X } from 'lucide-react';
+import {
+  CheckCircle2,
+  AlertOctagon,
+  AlertTriangle,
+  Info,
+  X,
+  LayoutDashboard,
+  ShieldAlert,
+  ShieldCheck,
+  UserCheck,
+  Menu
+} from 'lucide-react';
 
 interface Toast {
   id: string;
@@ -46,6 +57,7 @@ export function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [activePlaygroundPayload, setActivePlaygroundPayload] = useState<ActionPayload | null>(null);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
   useEffect(() => {
     const handleGlobalKey = (e: KeyboardEvent) => {
@@ -364,6 +376,11 @@ export function App() {
   const pendingCount = approvals.filter((a) => a.status === 'PENDING').length;
   const activeAlertsCount = alerts.filter((a) => a.status === 'ACTIVE').length;
 
+  const handleNavigate = (route: RouteId) => {
+    setCurrentRoute(route);
+    setIsMobileNavOpen(false);
+  };
+
   return (
     <div className="min-h-screen bg-[#08080A] text-[#E2E3E9] flex flex-col font-sans selection:bg-[#CC9166]/25 selection:text-white">
       {/* Top Navbar with Emergency Pause controls & Kill Switch */}
@@ -372,16 +389,18 @@ export function App() {
         pauseState={pauseState}
         onToggleEmergencyPause={handleToggleEmergencyPause}
         onResetDemo={handleResetDemo}
-        onRouteChange={setCurrentRoute}
+        onRouteChange={handleNavigate}
         onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
         isResetting={isResetting}
+        onToggleMobileMenu={() => setIsMobileNavOpen((prev) => !prev)}
+        isMobileMenuOpen={isMobileNavOpen}
       />
 
       {/* Global Command Palette (Ctrl + K) */}
       <CommandPalette
         isOpen={isCommandPaletteOpen}
         onClose={() => setIsCommandPaletteOpen(false)}
-        onRouteChange={setCurrentRoute}
+        onRouteChange={handleNavigate}
         onQuickRunScenario={handleQuickRunScenario}
         onToggleEmergencyPause={handleToggleEmergencyPause}
         isPaused={pauseState?.isPaused || false}
@@ -392,13 +411,15 @@ export function App() {
         {/* Sidebar Navigation */}
         <Sidebar
           currentRoute={currentRoute}
-          onRouteChange={setCurrentRoute}
+          onRouteChange={handleNavigate}
           pendingApprovalsCount={pendingCount}
           activeAlertsCount={activeAlertsCount}
+          isMobileOpen={isMobileNavOpen}
+          onCloseMobile={() => setIsMobileNavOpen(false)}
         />
 
         {/* Dynamic Route View */}
-        <main className="flex-1 p-4 lg:p-8 max-w-7xl mx-auto w-full overflow-y-auto">
+        <main className="flex-1 p-3.5 sm:p-5 lg:p-8 max-w-7xl mx-auto w-full pb-24 md:pb-8 overflow-y-auto">
           {currentRoute === 'attack-demo' && (
             <AttackDemo
               onRouteChange={setCurrentRoute}
@@ -469,8 +490,64 @@ export function App() {
         </main>
       </div>
 
+      {/* Mobile Bottom Navigation Bar (Visible only on < md screens) */}
+      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-[#08080A]/95 backdrop-blur-md border-t border-[#1C1D22] flex items-center justify-around py-1 px-1 md:hidden shadow-2xl">
+        <button
+          onClick={() => handleNavigate('dashboard')}
+          className={`flex flex-col items-center gap-1 py-1.5 px-2 rounded-[6px] transition-colors ${
+            currentRoute === 'dashboard' ? 'text-[#CC9166]' : 'text-[#9194A1] hover:text-[#E2E3E9]'
+          }`}
+        >
+          <LayoutDashboard className="w-4 h-4" />
+          <span className="text-[10px] font-medium tracking-tight">Dashboard</span>
+        </button>
+
+        <button
+          onClick={() => handleNavigate('attack-demo')}
+          className={`flex flex-col items-center gap-1 py-1.5 px-2 rounded-[6px] transition-colors ${
+            currentRoute === 'attack-demo' ? 'text-rose-400' : 'text-[#9194A1] hover:text-[#E2E3E9]'
+          }`}
+        >
+          <ShieldAlert className="w-4 h-4" />
+          <span className="text-[10px] font-medium tracking-tight">Attack Demo</span>
+        </button>
+
+        <button
+          onClick={() => handleNavigate('policies')}
+          className={`flex flex-col items-center gap-1 py-1.5 px-2 rounded-[6px] transition-colors ${
+            currentRoute === 'policies' ? 'text-[#CC9166]' : 'text-[#9194A1] hover:text-[#E2E3E9]'
+          }`}
+        >
+          <ShieldCheck className="w-4 h-4" />
+          <span className="text-[10px] font-medium tracking-tight">Rules</span>
+        </button>
+
+        <button
+          onClick={() => handleNavigate('approvals')}
+          className={`flex flex-col items-center gap-1 py-1.5 px-2 rounded-[6px] transition-colors relative ${
+            currentRoute === 'approvals' ? 'text-amber-300' : 'text-[#9194A1] hover:text-[#E2E3E9]'
+          }`}
+        >
+          <UserCheck className="w-4 h-4" />
+          <span className="text-[10px] font-medium tracking-tight">Approvals</span>
+          {pendingCount > 0 && (
+            <span className="absolute top-1 right-2 w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+          )}
+        </button>
+
+        <button
+          onClick={() => setIsMobileNavOpen((prev) => !prev)}
+          className={`flex flex-col items-center gap-1 py-1.5 px-2 rounded-[6px] transition-colors ${
+            isMobileNavOpen ? 'text-[#CC9166]' : 'text-[#9194A1] hover:text-[#E2E3E9]'
+          }`}
+        >
+          <Menu className="w-4 h-4" />
+          <span className="text-[10px] font-medium tracking-tight">More</span>
+        </button>
+      </nav>
+
       {/* Toast Notification Overlay */}
-      <div className="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-md w-full pointer-events-none">
+      <div className="fixed bottom-16 md:bottom-5 right-3 sm:right-5 z-50 flex flex-col gap-2 max-w-md w-full pointer-events-none">
         {toasts.map((toast) => (
           <div
             key={toast.id}
