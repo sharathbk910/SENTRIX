@@ -163,19 +163,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {renderNavGroup('Core Capabilities', coreFeaturesNav)}
       {renderNavGroup('Security Tools', toolsNav)}
 
-      {/* Security Architecture Box */}
-      <div className="p-3.5 rounded-[10px] bg-[#121317] border border-[#1C1D22] space-y-2">
-        <div className="flex items-center gap-2 text-[#E2E3E9] font-medium text-xs">
-          <Lock className="w-3.5 h-3.5 text-[#CC9166]" />
-          <span>Zero-Trust Gateway</span>
+      {/* Gateway Status Indicator */}
+      <div className="p-3 rounded-[8px] bg-[#121317] border border-[#1C1D22] flex items-center justify-between text-[11px] font-mono text-[#9194A1]">
+        <div className="flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+          <span className="text-[#E2E3E9] font-medium">Fail-Closed Gateway</span>
         </div>
-        <p className="text-[11px] text-[#9194A1] leading-relaxed font-sans">
-          All autonomous agent requests are intercepted, validated, and hashed before reaching mock resources.
-        </p>
-        <div className="pt-2 border-t border-[#1C1D22] flex items-center justify-between text-[10px] font-mono text-[#9194A1]">
-          <span>Boundary: Pre-Exec</span>
-          <span className="text-emerald-400 font-semibold">Fail-Closed</span>
-        </div>
+        <span className="text-[#CC9166] font-semibold text-[10px]">Zero-Trust</span>
       </div>
     </aside>
   );

@@ -123,7 +123,7 @@ export const Approvals: React.FC<ApprovalsProps> = ({
               className="px-3 py-1.5 rounded-[6px] bg-[#040406] hover:bg-[#17181F] border border-[#CC9166]/30 text-[#CC9166] text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-sm disabled:opacity-50"
             >
               <Sparkles className="w-3.5 h-3.5 text-[#CC9166]" />
-              <span>+ Sample Quarantine Action (1-Click)</span>
+              <span>+ Sample Approval Request</span>
             </button>
           )}
 
@@ -172,7 +172,7 @@ export const Approvals: React.FC<ApprovalsProps> = ({
           <User className="w-4 h-4 text-[#CC9166] shrink-0" />
           <div>
             <span className="font-medium text-white">Active Reviewer Persona:</span>
-            <p className="text-[11px] text-[#9194A1]">Separation of duties: Reviewer signature is attached to decision audit records.</p>
+            <p className="text-[11px] text-[#9194A1]">Reviewer identity attached to governance audit decisions.</p>
           </div>
         </div>
 

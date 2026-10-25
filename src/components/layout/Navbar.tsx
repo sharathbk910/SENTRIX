@@ -99,13 +99,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           )}
 
-          {/* Quick Guide for Judges / Evaluators */}
+          {/* System Architecture Guide Modal */}
           <button
             onClick={() => setShowGuideModal(true)}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-[6px] bg-[#CC9166]/10 hover:bg-[#CC9166]/20 border border-[#CC9166]/30 text-xs font-semibold text-[#CC9166] transition-colors"
           >
             <HelpCircle className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Demo Guide</span>
+            <span className="hidden sm:inline">System Guide</span>
           </button>
 
           {/* Emergency Pause Button */}
@@ -134,14 +134,14 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </header>
 
-      {/* Evaluator Demo Guide Modal */}
+      {/* System Guide Modal */}
       {showGuideModal && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-[#121317] rounded-[10px] border border-[#1C1D22] max-w-lg w-full p-6 space-y-4 shadow-2xl">
             <div className="flex items-center justify-between border-b border-[#1C1D22] pb-3">
               <div className="flex items-center gap-2 text-white font-serif text-lg font-normal">
                 <BookOpen className="w-5 h-5 text-[#CC9166]" />
-                <span>SENTRIX &mdash; 60-Second Evaluator Guide</span>
+                <span>SENTRIX Architecture &amp; Controls</span>
               </div>
               <button
                 onClick={() => setShowGuideModal(false)}
@@ -153,59 +153,59 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <div className="space-y-3 text-xs text-[#C7C9D1]">
               <p className="leading-relaxed">
-                SENTRIX is a <strong>deterministic AI Agent Security Gateway</strong> delivering five core safety controls for autonomous systems:
+                SENTRIX enforces deterministic, pre-execution security controls across all autonomous AI agent operations:
               </p>
 
               <div className="space-y-2 pt-1 max-h-72 overflow-y-auto">
                 <div className="p-3 rounded-[8px] bg-[#08080A] border border-rose-500/20 space-y-1">
                   <div className="font-semibold text-rose-400 flex items-center gap-1.5 font-mono text-[11px]">
-                    <span>Feature 1 &bull; Live Attack Demonstration</span>
+                    <span>1. Adversarial Containment</span>
                   </div>
                   <p className="text-[#9194A1] text-[11px] leading-relaxed">
-                    Interactive prompt injection & exfiltration attack scenario with side-by-side comparison (Unprotected vs SENTRIX Protected).
+                    Evaluates prompt injections, dangerous system overrides, and data exfiltration payloads before execution.
                   </p>
                 </div>
 
                 <div className="p-3 rounded-[8px] bg-[#08080A] border border-[#1C1D22] space-y-1">
                   <div className="font-semibold text-[#CC9166] flex items-center gap-1.5 font-mono text-[11px]">
-                    <span>Feature 2 &bull; Real-Time Action Dashboard</span>
+                    <span>2. Real-Time Telemetry Feed</span>
                   </div>
                   <p className="text-[#9194A1] text-[11px] leading-relaxed">
-                    Live telemetry feed with risk scores, matched policies, decision badges, and real-time polling.
+                    Continuous stream of intercepted agent requests, computed risk scores, and enforced policy verdicts.
                   </p>
                 </div>
 
                 <div className="p-3 rounded-[8px] bg-[#08080A] border border-[#1C1D22] space-y-1">
                   <div className="font-semibold text-[#E2E3E9] flex items-center gap-1.5 font-mono text-[11px]">
-                    <span>Feature 3 &bull; Plain-English Policy Builder</span>
+                    <span>3. Natural Language Policy Engine</span>
                   </div>
                   <p className="text-[#9194A1] text-[11px] leading-relaxed">
-                    Author rules in ordinary English. Converts into structured policies with pre-activation test validation.
+                    Compiles human-readable guidelines into structured validation criteria with conflict detection.
                   </p>
                 </div>
 
                 <div className="p-3 rounded-[8px] bg-[#08080A] border border-amber-500/20 space-y-1">
                   <div className="font-semibold text-amber-300 flex items-center gap-1.5 font-mono text-[11px]">
-                    <span>Feature 4 &bull; Human Approval Workflow</span>
+                    <span>4. Human-in-the-Loop Quarantine</span>
                   </div>
                   <p className="text-[#9194A1] text-[11px] leading-relaxed">
-                    Guarantees quarantined actions cannot execute without human clearance. Auto-expiry TTL and replay protection.
+                    Holds high-risk operations in quarantine pending cryptographic approval tokens and supervisor authorization.
                   </p>
                 </div>
 
                 <div className="p-3 rounded-[8px] bg-[#08080A] border border-emerald-500/20 space-y-1">
                   <div className="font-semibold text-emerald-400 flex items-center gap-1.5 font-mono text-[11px]">
-                    <span>Feature 5 &bull; Tamper-Evident Audit Ledger</span>
+                    <span>5. Tamper-Evident Audit Ledger</span>
                   </div>
                   <p className="text-[#9194A1] text-[11px] leading-relaxed">
-                    SHA-256 cryptographic hash chaining linked to Genesis. Verify Integrity button and CSV/JSON export.
+                    SHA-256 forward hash chain guaranteeing unforgeable, chronologically validated forensic records.
                   </p>
                 </div>
               </div>
             </div>
 
             <div className="pt-2 border-t border-[#1C1D22] flex items-center justify-between">
-              <span className="text-[10px] text-[#9194A1] font-mono uppercase tracking-wider">PS 2.1 AI Agent Safety</span>
+              <span className="text-[10px] text-[#9194A1] font-mono uppercase tracking-wider">Zero-Trust Isolation Layer</span>
               <button
                 onClick={() => {
                   setShowGuideModal(false);
@@ -213,7 +213,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 }}
                 className="px-3.5 py-1.5 rounded-[6px] bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs flex items-center gap-1.5 transition-colors"
               >
-                <span>Launch Attack Demo</span>
+                <span>Threat Simulation</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>

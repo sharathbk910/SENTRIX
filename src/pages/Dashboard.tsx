@@ -200,37 +200,37 @@ export const Dashboard: React.FC<DashboardProps> = ({
         </div>
       </div>
 
-      {/* Evaluator Quick-Launch Benchmark Runner */}
+      {/* Policy Verification Scenarios */}
       <div className="enterprise-card p-4 bg-[#121317] border border-[#1C1D22] space-y-2.5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs">
           <span className="font-medium text-[#E2E3E9] flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#CC9166]" />
-            <span>Interactive 1-Click Verification Scenarios:</span>
+            <span>Gateway Policy Scenarios</span>
           </span>
           <span className="text-[10px] font-mono text-[#9194A1]">
-            Click any test to fire through the real server-side gateway
+            Select scenario to evaluate live against policy engine
           </span>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
           {[
-            { label: '1. Safe Read', tag: 'ALLOW', color: 'emerald' },
-            { label: '2. Delete Ledger', tag: 'BLOCK', color: 'rose' },
-            { label: '3. Exfiltration', tag: 'APPROVAL', color: 'amber' },
-            { label: '4. Unknown Tool', tag: 'DENY-DEF', color: 'rose' },
-            { label: '5. Secret Leak', tag: 'DLP BLOCK', color: 'blue' },
-            { label: '6. Prompt Injection', tag: 'INJECTION', color: 'purple' },
-            { label: '7. Denial Burst', tag: 'ANOMALY', color: 'amber' }
+            { label: 'Safe Read', tag: 'ALLOW', colorClass: 'text-emerald-400' },
+            { label: 'Delete Ledger', tag: 'BLOCK', colorClass: 'text-rose-400' },
+            { label: 'Exfiltration', tag: 'APPROVAL', colorClass: 'text-amber-300' },
+            { label: 'Unknown Tool', tag: 'DENY-DEF', colorClass: 'text-rose-400' },
+            { label: 'Secret Leak', tag: 'DLP BLOCK', colorClass: 'text-[#CC9166]' },
+            { label: 'Prompt Injection', tag: 'INJECTION', colorClass: 'text-[#CC9166]' },
+            { label: 'Denial Burst', tag: 'ANOMALY', colorClass: 'text-amber-300' }
           ].map((sc, i) => (
             <button
               key={i}
               onClick={() => onQuickRunScenario(i)}
               disabled={isEvaluating}
-              className="p-2 rounded-[6px] bg-[#040406] hover:bg-[#17181F] border border-[#1C1D22] hover:border-[#2E3038] text-left transition-all disabled:opacity-50"
+              className="p-2.5 rounded-[6px] bg-[#040406] hover:bg-[#17181F] border border-[#1C1D22] hover:border-[#2E3038] text-left transition-all disabled:opacity-50"
             >
-              <div className="flex items-center justify-between text-[10px] font-mono mb-0.5">
-                <span className="text-[#9194A1]">Step {i + 1}</span>
-                <span className={`font-semibold text-${sc.color}-400 text-[9px]`}>{sc.tag}</span>
+              <div className="flex items-center justify-between text-[10px] font-mono mb-1">
+                <span className="text-[#9194A1]">Scenario {i + 1}</span>
+                <span className={`font-semibold text-[9px] ${sc.colorClass}`}>{sc.tag}</span>
               </div>
               <div className="text-xs font-medium text-white truncate">{sc.label}</div>
             </button>

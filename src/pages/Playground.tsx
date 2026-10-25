@@ -206,7 +206,7 @@ export const Playground: React.FC<PlaygroundProps> = ({
       {/* Preset Selector */}
       <div className="enterprise-card p-4 space-y-3">
         <div className="flex items-center justify-between text-xs text-[#9194A1] font-medium">
-          <span>Verification Benchmark Scenarios (1-Click Run Available)</span>
+          <span>Policy Gateway Evaluation Scenarios</span>
           <span className="text-[11px] text-[#9194A1]/70 font-mono">Press Ctrl + Enter to Evaluate</span>
         </div>
 
@@ -261,7 +261,7 @@ export const Playground: React.FC<PlaygroundProps> = ({
                     className="px-2.5 py-1 rounded-[6px] bg-[#CC9166]/15 hover:bg-[#CC9166]/25 text-[#CC9166] hover:text-[#e0a980] border border-[#CC9166]/30 text-[11px] font-semibold flex items-center gap-1 transition-colors disabled:opacity-50"
                   >
                     <Sparkles className="w-3 h-3 text-[#CC9166]" />
-                    <span>Run Now ⚡</span>
+                    <span>Run Scenario</span>
                   </button>
                 </div>
               </div>
@@ -569,7 +569,7 @@ export const Playground: React.FC<PlaygroundProps> = ({
                       className="w-full py-2.5 px-3 rounded-[8px] bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 text-xs font-semibold flex items-center justify-center gap-2 transition-colors shadow-sm"
                     >
                       <Clock className="w-3.5 h-3.5" />
-                      <span>👉 Action Quarantined! Open Approval Queue</span>
+                      <span>Action Quarantined &mdash; Open Approval Queue</span>
                     </button>
                   )}
 
@@ -580,7 +580,7 @@ export const Playground: React.FC<PlaygroundProps> = ({
                       className="w-full py-2.5 px-3 rounded-[8px] bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-300 text-xs font-semibold flex items-center justify-center gap-2 transition-colors shadow-sm"
                     >
                       <AlertTriangle className="w-3.5 h-3.5" />
-                      <span>👉 Anomaly Alert Raised! Open Security Alerts</span>
+                      <span>Anomaly Alert Triggered &mdash; Open Security Alerts</span>
                     </button>
                   )}
 

@@ -78,7 +78,7 @@ export const AttackDemo: React.FC<AttackDemoProps> = ({ onRouteChange, onRefresh
         <div>
           <div className="flex items-center gap-2 text-rose-400 font-mono text-[11px] uppercase tracking-wider mb-1">
             <ShieldAlert className="w-3.5 h-3.5 text-rose-400" />
-            <span>Problem Statement 2.1 — AI Agent Safety & Control</span>
+            <span>Threat Vector &amp; Adversarial Containment</span>
           </div>
           <h1 className="text-2xl font-serif text-white tracking-tight font-normal">
             Live Attack Demonstration & Side-by-Side Containment
@@ -134,7 +134,7 @@ export const AttackDemo: React.FC<AttackDemoProps> = ({ onRouteChange, onRefresh
             <span>Demonstration Attack Scenario: Prompt Injection &rarr; Confidential Exfiltration</span>
           </span>
           <span className="font-mono text-[10px] px-2 py-0.5 rounded-[4px] bg-[#040406] border border-[#1C1D22] text-[#9194A1]">
-            Controlled Mock Perimeter
+            Controlled Sandbox Perimeter
           </span>
         </div>
 
@@ -156,7 +156,7 @@ export const AttackDemo: React.FC<AttackDemoProps> = ({ onRouteChange, onRefresh
           <div className="p-3 rounded-[8px] bg-[#040406] border border-[#1C1D22] space-y-1">
             <span className="text-[10px] font-mono uppercase text-[#CC9166] font-medium">3. Gateway Target Defense</span>
             <p className="text-[#C7C9D1] text-xs font-sans leading-relaxed">
-              Intercept <code className="text-[#CC9166] font-mono text-[11px]">data_transfer:export</code> before target mock file store is accessed.
+              Intercept <code className="text-[#CC9166] font-mono text-[11px]">data_transfer:export</code> before target protected file store is accessed.
             </p>
           </div>
         </div>
@@ -248,7 +248,7 @@ export const AttackDemo: React.FC<AttackDemoProps> = ({ onRouteChange, onRefresh
             </div>
 
             <p className="text-xs text-[#9194A1] leading-relaxed font-sans pt-1">
-              SENTRIX intercepts the proposed action before it reaches protected mock resources. It detects the injection signature, flags outbound secrets, applies deterministic policy POL-004, and records an immutable audit seal.
+              SENTRIX intercepts the proposed action before it reaches protected corporate resources. It detects the injection signature, flags outbound secrets, applies deterministic policy POL-004, and records an immutable audit seal.
             </p>
           </div>
 

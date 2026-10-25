@@ -72,7 +72,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     { idx: 1, label: 'Run Block Delete (BLOCK)', tag: 'Destructive', desc: 'Attempt to delete 2025 financial ledger' },
     { idx: 2, label: 'Run Quarantine Transfer (REQUIRE_APPROVAL)', tag: 'TTL Quarantined', desc: 'Transfer confidential customer dossier' },
     { idx: 3, label: 'Run Deny-by-Default (BLOCK)', tag: 'Unknown Tool', desc: 'Execute unregistered internal cluster utility' },
-    { idx: 4, label: 'Run DLP Secret Leak (BLOCK)', tag: 'Secret Intercepted', desc: 'Exfiltrate payload containing mock API token' },
+    { idx: 4, label: 'Run DLP Secret Leak (BLOCK)', tag: 'Secret Intercepted', desc: 'Exfiltrate payload containing API credential token' },
     { idx: 5, label: 'Run Prompt Injection Attack (BLOCK)', tag: 'Adversarial Prompt', desc: 'Inject instruction override in untrusted document' },
     { idx: 6, label: 'Run Fuzzing Anomaly Burst', tag: 'Anomaly Spike', desc: 'Probe system shell to trigger sliding window alert' }
   ];

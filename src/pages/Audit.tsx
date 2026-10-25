@@ -180,7 +180,7 @@ export const Audit: React.FC<AuditProps> = ({ events, onRefreshAudit }) => {
             <span>{isVerifying ? 'Verifying Chain...' : 'Verify Chain Integrity'}</span>
           </button>
 
-          {/* Simulate Tamper for Hackathon Judges */}
+          {/* Simulate Tamper */}
           <button
             onClick={handleSimulateTamper}
             disabled={isTampering}
@@ -188,7 +188,7 @@ export const Audit: React.FC<AuditProps> = ({ events, onRefreshAudit }) => {
             title="Alters an event payload to demonstrate instant tamper detection"
           >
             <AlertOctagon className="w-3.5 h-3.5 text-amber-400" />
-            <span>Simulate Tamper (Demo)</span>
+            <span>Simulate Tamper</span>
           </button>
 
           {/* Export JSON */}
@@ -239,14 +239,6 @@ export const Audit: React.FC<AuditProps> = ({ events, onRefreshAudit }) => {
           </div>
         </div>
       )}
-
-      {/* Educational Notice: Trust Limitations of Hash Chains */}
-      <div className="p-3.5 rounded-[10px] bg-[#121317] border border-[#1C1D22] text-xs text-[#9194A1] flex items-start gap-2.5">
-        <Info className="w-4 h-4 text-[#CC9166] shrink-0 mt-0.5" />
-        <p className="leading-relaxed">
-          <strong className="text-[#E2E3E9]">Tamper-Evidence Architecture:</strong> Each audit event computes a SHA-256 digest over its canonical properties and the hash of the preceding event, forming an unbroken cryptographic chain back to Genesis. While a hash chain makes retroactive tampering mathematically evident, production hardening requires replication to append-only storage and KMS digital signatures.
-        </p>
-      </div>
 
       {/* Search and Filters */}
       <div className="enterprise-card p-4 space-y-3">

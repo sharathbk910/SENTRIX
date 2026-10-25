@@ -60,7 +60,7 @@ export const Alerts: React.FC<AlertsProps> = ({
               className="px-3.5 py-2 rounded-[8px] bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-300 text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-sm disabled:opacity-50"
             >
               <Sparkles className="w-3.5 h-3.5 text-rose-400" />
-              <span>⚡ Trigger Test Anomaly Spike (1-Click)</span>
+              <span>Simulate Anomaly Spike</span>
             </button>
           )}
 
@@ -102,14 +102,6 @@ export const Alerts: React.FC<AlertsProps> = ({
         </div>
       </div>
 
-      {/* Advisory Note */}
-      <div className="p-3.5 rounded-[10px] bg-[#121317] border border-[#1C1D22] text-xs text-[#9194A1] flex items-start gap-2.5">
-        <Activity className="w-4 h-4 text-[#CC9166] shrink-0 mt-0.5" />
-        <div className="leading-relaxed">
-          <strong className="text-[#E2E3E9]">Statistical Baseline:</strong> Alerts represent suspicious automated denial spikes within a sliding window. Review details and resolve when investigation is completed.
-        </div>
-      </div>
-
       {/* Alerts List */}
       {filtered.length === 0 ? (
         <div className="enterprise-card p-12 text-center space-y-3">
@@ -134,7 +126,7 @@ export const Alerts: React.FC<AlertsProps> = ({
                   className="px-4 py-2 rounded-[8px] bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs inline-flex items-center gap-1.5 transition-colors shadow-sm disabled:opacity-50"
                 >
                   <Sparkles className="w-3.5 h-3.5" />
-                  <span>Trigger Sample Anomaly Spike (1-Click)</span>
+                  <span>Simulate Anomaly Spike</span>
                 </button>
               )}
               <button
@@ -237,34 +229,6 @@ export const Alerts: React.FC<AlertsProps> = ({
           ))}
         </div>
       )}
-
-      {/* Educational Guidance Section */}
-      <div className="p-4 rounded-[10px] bg-[#121317] border border-[#1C1D22] space-y-2 text-xs text-[#9194A1]">
-        <div className="font-semibold text-[#E2E3E9] flex items-center gap-2">
-          <HelpCircle className="w-4 h-4 text-[#CC9166]" />
-          <span>How Statistical Anomaly Detection Works in SENTRIX</span>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
-          <div className="p-3.5 rounded-[8px] bg-[#040406] border border-[#1C1D22] space-y-1">
-            <strong className="text-[#CC9166] font-semibold">1. Sliding Window Tracking</strong>
-            <p className="text-[11px] text-[#9194A1] leading-relaxed">
-              Tracks all denied and blocked actions per agent across a rolling 5-minute sliding window.
-            </p>
-          </div>
-          <div className="p-3.5 rounded-[8px] bg-[#040406] border border-[#1C1D22] space-y-1">
-            <strong className="text-amber-400 font-semibold">2. Threshold Tripwire (&ge;3 Denials)</strong>
-            <p className="text-[11px] text-[#9194A1] leading-relaxed">
-              If an autonomous agent accumulates &ge;3 denials within 5 minutes, an active anomaly alert is flagged immediately.
-            </p>
-          </div>
-          <div className="p-3.5 rounded-[8px] bg-[#040406] border border-[#1C1D22] space-y-1">
-            <strong className="text-emerald-400 font-semibold">3. SecOps Resolution</strong>
-            <p className="text-[11px] text-[#9194A1] leading-relaxed">
-              SecOps personnel inspect the affected agent, determine if rogue behavior is present, take administrative action, or resolve the alert.
-            </p>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

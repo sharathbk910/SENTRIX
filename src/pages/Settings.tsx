@@ -82,7 +82,7 @@ export const Settings: React.FC<SettingsProps> = ({ onResetDemo, isResetting }) 
           </div>
 
           <p className="text-xs text-[#9194A1] leading-relaxed pt-1">
-            Every autonomous agent action is intercepted, validated, and logged before any downstream tools or mock resources are contacted.
+            Every autonomous agent action is intercepted, validated, and logged before any downstream tools or protected resources are contacted.
           </p>
         </div>
 
@@ -118,7 +118,7 @@ export const Settings: React.FC<SettingsProps> = ({ onResetDemo, isResetting }) 
           </div>
 
           <p className="text-xs text-[#9194A1] leading-relaxed pt-1">
-            Protects enterprise data perimeters with zero external paid AI model dependencies or cloud API key risks.
+            Deterministic pre-execution isolation boundary with zero external model dependencies.
           </p>
         </div>
       </div>
@@ -174,12 +174,16 @@ export const Settings: React.FC<SettingsProps> = ({ onResetDemo, isResetting }) 
               </p>
               <div className="p-2.5 rounded-[6px] bg-[#121317] border border-[#1C1D22] font-mono text-[11px] text-[#C7C9D1] space-y-0.5">
                 <div className="flex justify-between">
-                  <span className="text-[#9194A1]">Ledger Balance:</span>
-                  <strong className="text-emerald-400">$48,500,000.00</strong>
+                  <span className="text-[#9194A1]">Ledger Accounts:</span>
+                  <strong className="text-emerald-400">
+                    {resources.financialRecords.length} Accounts (${resources.financialRecords.reduce((sum, r) => sum + (r.balanceUSD || 0), 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })})
+                  </strong>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-[#9194A1]">Status:</span>
-                  <strong className="text-emerald-400">INTACT (LOCKED)</strong>
+                  <strong className="text-emerald-400">
+                    {resources.financialRecords.every((r) => r.protectedStatus === 'LOCKED') ? 'INTACT (LOCKED)' : 'MODIFIED'}
+                  </strong>
                 </div>
               </div>
             </div>
