@@ -8,7 +8,10 @@ import {
   MockResources,
   Policy,
   PolicyConflictWarning,
-  SystemStats
+  SystemStats,
+  PolicyTranslationResult,
+  IntegrityVerificationResult,
+  AttackDemoExecution
 } from '../types';
 
 /**
@@ -175,9 +178,38 @@ export const api = {
     });
   },
 
-  // Policies & Conflicts (Feature D)
+  // Policies & Plain-English Builder (Feature 3)
   getPolicies: async (): Promise<{ success: boolean; policies: Policy[] }> => {
     return request<{ success: boolean; policies: Policy[] }>('/policies');
+  },
+
+  translatePolicy: async (input: string): Promise<PolicyTranslationResult> => {
+    return request<PolicyTranslationResult>('/policies/translate', {
+      method: 'POST',
+      body: JSON.stringify({ input })
+    });
+  },
+
+  createPolicy: async (
+    policy: Omit<Policy, 'id' | 'created_at'>
+  ): Promise<{
+    success: boolean;
+    policy: Policy;
+    conflicts?: PolicyConflictWarning[];
+    conflict?: PolicyConflictWarning;
+  }> => {
+    return request('/policies', {
+      method: 'POST',
+      body: JSON.stringify(policy)
+    });
+  },
+
+  deletePolicy: async (
+    id: string
+  ): Promise<{ success: boolean; message: string; conflicts?: PolicyConflictWarning[] }> => {
+    return request(`/policies/${id}`, {
+      method: 'DELETE'
+    });
   },
 
   getPolicyConflicts: async (): Promise<{ success: boolean; conflicts: PolicyConflictWarning[] }> => {
@@ -193,7 +225,7 @@ export const api = {
     );
   },
 
-  // Approvals & Expiry (Feature E)
+  // Approvals & Expiry (Feature 4)
   getApprovals: async (): Promise<{ success: boolean; approvals: ApprovalRequest[] }> => {
     return request<{ success: boolean; approvals: ApprovalRequest[] }>('/approvals');
   },
@@ -201,7 +233,8 @@ export const api = {
   submitApprovalDecision: async (
     id: string,
     decision: 'APPROVE' | 'REJECT',
-    reviewer = 'SecOps Supervisor'
+    reviewer = 'SecOps Supervisor',
+    rejectionReason?: string
   ): Promise<{
     success: boolean;
     approval: ApprovalRequest | null;
@@ -211,7 +244,7 @@ export const api = {
   }> => {
     return request(`/approvals/${id}/decision`, {
       method: 'POST',
-      body: JSON.stringify({ decision, reviewer })
+      body: JSON.stringify({ decision, reviewer, rejectionReason })
     });
   },
 
@@ -223,7 +256,7 @@ export const api = {
     });
   },
 
-  // Anomaly Alerts (Feature C)
+  // Anomaly Alerts
   getAlerts: async (): Promise<{ success: boolean; alerts: BehaviorAnomalyAlert[] }> => {
     return request<{ success: boolean; alerts: BehaviorAnomalyAlert[] }>('/alerts');
   },
@@ -234,7 +267,7 @@ export const api = {
     });
   },
 
-  // Emergency Pause / Kill Switch (Feature F)
+  // Emergency Pause / Kill Switch
   getEmergencyPause: async (): Promise<{ success: boolean; pauseState: EmergencyPauseState }> => {
     return request<{ success: boolean; pauseState: EmergencyPauseState }>('/emergency-pause');
   },
@@ -253,9 +286,39 @@ export const api = {
     );
   },
 
-  // Audit Logs
+  // Tamper-Evident Audit Logs & Verification (Feature 5)
   getAuditEvents: async (): Promise<{ success: boolean; events: AuditEvent[] }> => {
     return request<{ success: boolean; events: AuditEvent[] }>('/audit');
+  },
+
+  verifyAuditIntegrity: async (): Promise<{
+    success: boolean;
+    verification: IntegrityVerificationResult;
+  }> => {
+    return request<{ success: boolean; verification: IntegrityVerificationResult }>('/audit/verify');
+  },
+
+  simulateAuditTamper: async (
+    eventId?: string
+  ): Promise<{ success: boolean; message: string; result: any }> => {
+    return request('/audit/simulate-tamper', {
+      method: 'POST',
+      body: JSON.stringify({ eventId })
+    });
+  },
+
+  // Live Attack Demonstration (Feature 1)
+  getAttackScenario: async (): Promise<{ success: boolean; scenario: any }> => {
+    return request('/attack-demo/scenario');
+  },
+
+  runAttackDemo: async (): Promise<{
+    success: boolean;
+    execution: AttackDemoExecution;
+  }> => {
+    return request('/attack-demo/run', {
+      method: 'POST'
+    });
   },
 
   // Stats

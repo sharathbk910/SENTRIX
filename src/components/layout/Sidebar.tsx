@@ -7,10 +7,19 @@ import {
   FileText,
   Sliders,
   AlertTriangle,
-  Lock
+  Lock,
+  ShieldAlert
 } from 'lucide-react';
 
-export type RouteId = 'dashboard' | 'playground' | 'policies' | 'approvals' | 'alerts' | 'audit' | 'settings';
+export type RouteId =
+  | 'dashboard'
+  | 'attack-demo'
+  | 'playground'
+  | 'policies'
+  | 'approvals'
+  | 'alerts'
+  | 'audit'
+  | 'settings';
 
 interface SidebarProps {
   currentRoute: RouteId;
@@ -19,47 +28,72 @@ interface SidebarProps {
   activeAlertsCount?: number;
 }
 
+interface NavItem {
+  id: RouteId;
+  label: string;
+  icon: any;
+  badge: string | null;
+  badgeAlert?: boolean;
+  badgeCritical?: boolean;
+  description: string;
+}
+
 export const Sidebar: React.FC<SidebarProps> = ({
   currentRoute,
   onRouteChange,
   pendingApprovalsCount,
   activeAlertsCount = 0
 }) => {
-  const platformNav = [
+  const coreFeaturesNav: NavItem[] = [
     {
-      id: 'dashboard' as RouteId,
-      label: 'Overview',
-      icon: LayoutDashboard,
-      badge: null,
-      description: 'Metrics & Live Stream'
+      id: 'attack-demo',
+      label: 'Live Attack Demo',
+      icon: ShieldAlert,
+      badge: 'DEMO 1',
+      badgeAlert: true,
+      description: 'Prompt Injection Defense'
     },
     {
-      id: 'playground' as RouteId,
-      label: 'Policy Gateway',
-      icon: Terminal,
+      id: 'dashboard' as RouteId,
+      label: 'Real-Time Dashboard',
+      icon: LayoutDashboard,
       badge: null,
-      description: 'Action Evaluation Console'
+      description: 'Agent Action Feed & KPIs'
     },
     {
       id: 'policies' as RouteId,
       label: 'Security Policies',
       icon: ShieldCheck,
-      badge: '5 Rules',
-      description: 'Deterministic Enforcement'
+      badge: 'NLP Studio',
+      description: 'Plain-English Policy Rules'
     },
-  ];
-
-  const governanceNav = [
     {
       id: 'approvals' as RouteId,
       label: 'Approval Queue',
       icon: UserCheck,
       badge: pendingApprovalsCount > 0 ? `${pendingApprovalsCount}` : null,
       badgeAlert: pendingApprovalsCount > 0,
-      description: 'Human-in-the-Loop Clearance'
+      description: 'Human Clearance with TTL'
     },
     {
-      id: 'alerts' as RouteId,
+      id: 'audit' as RouteId,
+      label: 'Audit Ledger',
+      icon: FileText,
+      badge: 'SHA-256',
+      description: 'Tamper-Evident Hash Chain'
+    }
+  ];
+
+  const toolsNav: NavItem[] = [
+    {
+      id: 'playground',
+      label: 'Policy Console',
+      icon: Terminal,
+      badge: null,
+      description: 'Workbench & Payload Fuzzer'
+    },
+    {
+      id: 'alerts',
       label: 'Security Alerts',
       icon: AlertTriangle,
       badge: activeAlertsCount > 0 ? `${activeAlertsCount}` : null,
@@ -67,14 +101,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       description: 'Behavior Anomaly Detection'
     },
     {
-      id: 'audit' as RouteId,
-      label: 'Audit Trail',
-      icon: FileText,
-      badge: null,
-      description: 'Immutable Event Ledger'
-    },
-    {
-      id: 'settings' as RouteId,
+      id: 'settings',
       label: 'Security Posture',
       icon: Sliders,
       badge: null,
@@ -82,11 +109,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
     }
   ];
 
-  const allItems = [...platformNav, ...governanceNav];
-
-  const renderNavGroup = (title: string, items: typeof platformNav) => (
+  const renderNavGroup = (title: string, items: NavItem[]) => (
     <div>
-      <p className="px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-2">
+      <p className="px-3 text-[10px] font-semibold uppercase tracking-wider text-[#9194A1] mb-2 font-mono">
         {title}
       </p>
       <nav className="space-y-1">
@@ -98,25 +123,29 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <button
               key={item.id}
               onClick={() => onRouteChange(item.id)}
-              className={`w-full text-left px-3 py-2.5 rounded-lg transition-colors flex items-center justify-between text-xs font-medium ${
+              className={`w-full text-left px-3 py-2 rounded-[6px] text-xs transition-all flex items-center justify-between group ${
                 isActive
-                  ? 'bg-blue-600/15 text-blue-400 border border-blue-500/30'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent'
+                  ? 'bg-[#121317] text-white border border-[#2E3038] font-medium shadow-sm'
+                  : 'text-[#9194A1] hover:text-[#E2E3E9] hover:bg-[#121317]/60 border border-transparent'
               }`}
             >
-              <div className="flex items-center gap-2.5">
-                <Icon className={`w-4 h-4 ${isActive ? 'text-blue-400' : 'text-slate-400'}`} />
-                <span>{item.label}</span>
+              <div className="flex items-center gap-2.5 truncate">
+                <Icon
+                  className={`w-3.5 h-3.5 shrink-0 transition-colors ${
+                    isActive ? 'text-[#CC9166]' : 'text-[#9194A1] group-hover:text-[#C7C9D1]'
+                  }`}
+                />
+                <span className="truncate">{item.label}</span>
               </div>
 
               {item.badge && (
                 <span
-                  className={`text-[10px] px-2 py-0.5 rounded font-medium ${
-                    (item as any).badgeCritical
-                      ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
-                      : (item as any).badgeAlert
-                      ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
-                      : 'bg-slate-800 text-slate-400'
+                  className={`text-[9px] font-mono px-1.5 py-0.5 rounded-[4px] shrink-0 border tracking-wider ${
+                    item.badgeAlert
+                      ? 'bg-rose-500/[0.08] text-rose-300 border-rose-500/30 font-semibold'
+                      : item.badgeCritical
+                      ? 'bg-amber-500/[0.08] text-amber-300 border-amber-500/30 font-semibold'
+                      : 'bg-[#08080A] text-[#9194A1] border-[#1C1D22]'
                   }`}
                 >
                   {item.badge}
@@ -130,58 +159,24 @@ export const Sidebar: React.FC<SidebarProps> = ({
   );
 
   return (
-    <>
-      {/* Mobile Horizontal Navigation Bar (< md) */}
-      <div className="md:hidden flex overflow-x-auto p-2 bg-slate-900 border-b border-slate-800 gap-1.5 scrollbar-none shrink-0 sticky top-14 z-20">
-        {allItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = currentRoute === item.id;
-          return (
-            <button
-              key={item.id}
-              onClick={() => onRouteChange(item.id)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap flex items-center gap-1.5 transition-colors shrink-0 ${
-                isActive
-                  ? 'bg-blue-600/20 text-blue-400 border border-blue-500/40 font-semibold'
-                  : 'bg-slate-800/60 text-slate-400 border border-slate-700/60 hover:text-white'
-              }`}
-            >
-              <Icon className="w-3.5 h-3.5" />
-              <span>{item.label}</span>
-              {item.badge && (
-                <span className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${
-                  (item as any).badgeCritical
-                    ? 'bg-rose-500 text-white'
-                    : (item as any).badgeAlert
-                    ? 'bg-amber-500 text-black font-bold'
-                    : 'bg-slate-700 text-slate-300'
-                }`}>
-                  {item.badge}
-                </span>
-              )}
-            </button>
-          );
-        })}
+    <aside className="w-full md:w-64 bg-[#040406] border-r border-[#1C1D22] p-4 space-y-6 shrink-0">
+      {renderNavGroup('Core Capabilities', coreFeaturesNav)}
+      {renderNavGroup('Security Tools', toolsNav)}
+
+      {/* Security Architecture Box */}
+      <div className="p-3.5 rounded-[10px] bg-[#121317] border border-[#1C1D22] space-y-2">
+        <div className="flex items-center gap-2 text-[#E2E3E9] font-medium text-xs">
+          <Lock className="w-3.5 h-3.5 text-[#CC9166]" />
+          <span>Zero-Trust Gateway</span>
+        </div>
+        <p className="text-[11px] text-[#9194A1] leading-relaxed font-sans">
+          All autonomous agent requests are intercepted, validated, and hashed before reaching mock resources.
+        </p>
+        <div className="pt-2 border-t border-[#1C1D22] flex items-center justify-between text-[10px] font-mono text-[#9194A1]">
+          <span>Boundary: Pre-Exec</span>
+          <span className="text-emerald-400 font-semibold">Fail-Closed</span>
+        </div>
       </div>
-
-      {/* Desktop Vertical Sidebar (>= md) */}
-      <aside className="hidden md:flex md:w-60 border-r border-slate-800 bg-slate-900/60 flex-col justify-between shrink-0 min-h-[calc(100vh-4rem)]">
-        <div className="p-4 space-y-6">
-          {renderNavGroup('Platform', platformNav)}
-          {renderNavGroup('Governance & Audit', governanceNav)}
-        </div>
-
-        {/* Clean Enterprise Trust Footer */}
-        <div className="p-4 border-t border-slate-800 bg-slate-900/40">
-          <div className="flex items-center gap-2 text-xs text-slate-400">
-            <Lock className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-            <div className="leading-tight">
-              <div className="font-medium text-slate-300">Enforcement Engine</div>
-              <div className="text-[11px] text-slate-500">Deterministic Zero-Trust</div>
-            </div>
-          </div>
-        </div>
-      </aside>
-    </>
+    </aside>
   );
 };

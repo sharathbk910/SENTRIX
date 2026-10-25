@@ -41,10 +41,10 @@ export const Alerts: React.FC<AlertsProps> = ({
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#1C1D22] pb-5">
         <div>
-          <h1 className="text-xl font-bold text-white tracking-tight">Security Anomaly Alerts</h1>
-          <p className="text-xs text-slate-400 mt-1 max-w-2xl">
+          <h1 className="font-serif text-2xl text-white tracking-tight">Security Anomaly Alerts</h1>
+          <p className="text-xs text-[#9194A1] mt-1 max-w-2xl leading-relaxed">
             Statistical behavioral monitoring for repeated denial spikes (&ge;3 blocked attempts in 5 minutes) and automated tool bursts.
           </p>
         </div>
@@ -57,7 +57,7 @@ export const Alerts: React.FC<AlertsProps> = ({
                 setFilter('ACTIVE');
               }}
               disabled={isLoading}
-              className="px-3 py-1.5 rounded-lg bg-rose-500/15 hover:bg-rose-500/25 border border-rose-500/30 text-rose-300 text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-sm disabled:opacity-50"
+              className="px-3.5 py-2 rounded-[8px] bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-300 text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-sm disabled:opacity-50"
             >
               <Sparkles className="w-3.5 h-3.5 text-rose-400" />
               <span>⚡ Trigger Test Anomaly Spike (1-Click)</span>
@@ -65,13 +65,13 @@ export const Alerts: React.FC<AlertsProps> = ({
           )}
 
           {/* Filter Tabs */}
-          <div className="flex p-1 rounded-lg bg-slate-900 border border-slate-800 text-xs font-medium">
+          <div className="flex p-1 rounded-[8px] bg-[#040406] border border-[#1C1D22] text-xs font-medium">
             <button
               onClick={() => setFilter('ACTIVE')}
-              className={`px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-[6px] transition-colors flex items-center gap-1.5 ${
                 filter === 'ACTIVE'
-                  ? 'bg-slate-800 text-white font-semibold'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-[#121317] text-white font-semibold border border-[#2E3038]'
+                  : 'text-[#9194A1] hover:text-white'
               }`}
             >
               <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
@@ -79,10 +79,10 @@ export const Alerts: React.FC<AlertsProps> = ({
             </button>
             <button
               onClick={() => setFilter('RESOLVED')}
-              className={`px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-[6px] transition-colors flex items-center gap-1.5 ${
                 filter === 'RESOLVED'
-                  ? 'bg-slate-800 text-white font-semibold'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-[#121317] text-white font-semibold border border-[#2E3038]'
+                  : 'text-[#9194A1] hover:text-white'
               }`}
             >
               <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
@@ -90,10 +90,10 @@ export const Alerts: React.FC<AlertsProps> = ({
             </button>
             <button
               onClick={() => setFilter('ALL')}
-              className={`px-3 py-1.5 rounded-md transition-colors ${
+              className={`px-3 py-1.5 rounded-[6px] transition-colors ${
                 filter === 'ALL'
-                  ? 'bg-slate-800 text-white font-semibold'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-[#121317] text-white font-semibold border border-[#2E3038]'
+                  : 'text-[#9194A1] hover:text-white'
               }`}
             >
               <span>All ({alerts.length})</span>
@@ -103,10 +103,10 @@ export const Alerts: React.FC<AlertsProps> = ({
       </div>
 
       {/* Advisory Note */}
-      <div className="p-3.5 rounded-lg bg-slate-900/60 border border-slate-800 text-xs text-slate-400 flex items-start gap-2.5">
-        <Activity className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+      <div className="p-3.5 rounded-[10px] bg-[#121317] border border-[#1C1D22] text-xs text-[#9194A1] flex items-start gap-2.5">
+        <Activity className="w-4 h-4 text-[#CC9166] shrink-0 mt-0.5" />
         <div className="leading-relaxed">
-          <strong className="text-slate-300">Statistical Baseline:</strong> Alerts represent suspicious automated denial spikes within a sliding window. Review details and resolve when investigation is completed.
+          <strong className="text-[#E2E3E9]">Statistical Baseline:</strong> Alerts represent suspicious automated denial spikes within a sliding window. Review details and resolve when investigation is completed.
         </div>
       </div>
 
@@ -114,10 +114,10 @@ export const Alerts: React.FC<AlertsProps> = ({
       {filtered.length === 0 ? (
         <div className="enterprise-card p-12 text-center space-y-3">
           <CheckCircle className="w-10 h-10 mx-auto text-emerald-500/70" />
-          <h3 className="text-sm font-semibold text-slate-200">
+          <h3 className="text-sm font-semibold text-white">
             {filter === 'ACTIVE' ? 'No Active Anomaly Alerts' : 'No Alerts in this View'}
           </h3>
-          <p className="text-xs text-slate-400 max-w-md mx-auto">
+          <p className="text-xs text-[#9194A1] max-w-md mx-auto leading-relaxed">
             {filter === 'ACTIVE'
               ? 'All agents are currently within safe operational limits. You can trigger repeated blocked calls in the Policy Gateway to test anomaly threshold alerting.'
               : 'Alerts you mark as resolved will appear here.'}
@@ -131,7 +131,7 @@ export const Alerts: React.FC<AlertsProps> = ({
                     setFilter('ACTIVE');
                   }}
                   disabled={isLoading}
-                  className="px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs inline-flex items-center gap-1.5 transition-colors shadow-lg shadow-rose-600/10 disabled:opacity-50"
+                  className="px-4 py-2 rounded-[8px] bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs inline-flex items-center gap-1.5 transition-colors shadow-sm disabled:opacity-50"
                 >
                   <Sparkles className="w-3.5 h-3.5" />
                   <span>Trigger Sample Anomaly Spike (1-Click)</span>
@@ -139,10 +139,10 @@ export const Alerts: React.FC<AlertsProps> = ({
               )}
               <button
                 onClick={() => onRouteChange('playground')}
-                className="px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs text-slate-200 inline-flex items-center gap-1.5 transition-colors"
+                className="px-3.5 py-2 rounded-[8px] bg-[#121317] hover:bg-[#1C1D22] border border-[#1C1D22] hover:border-[#2E3038] text-xs text-[#C7C9D1] inline-flex items-center gap-1.5 transition-colors"
               >
                 <span>Test in Policy Gateway</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                <ArrowRight className="w-3.5 h-3.5 text-[#9194A1]" />
               </button>
             </div>
           )}
@@ -152,22 +152,22 @@ export const Alerts: React.FC<AlertsProps> = ({
           {filtered.map(alert => (
             <div
               key={alert.id}
-              className={`p-4 rounded-lg border transition-colors ${
+              className={`p-4 rounded-[10px] border transition-colors ${
                 alert.status === 'ACTIVE'
                   ? alert.severity === 'CRITICAL'
-                    ? 'border-rose-800/60 bg-rose-950/20'
-                    : 'border-amber-800/60 bg-amber-950/20'
-                  : 'bg-slate-900/40 border-slate-800 opacity-75'
+                    ? 'border-rose-500/40 bg-rose-950/20'
+                    : 'border-amber-500/40 bg-amber-950/20'
+                  : 'bg-[#121317]/40 border-[#1C1D22] opacity-75'
               }`}
             >
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                 <div className="space-y-2 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-xs font-mono font-medium px-2 py-0.5 rounded bg-slate-950 border border-slate-800 text-slate-200">
+                    <span className="text-xs font-mono font-medium px-2 py-0.5 rounded-[4px] bg-[#040406] border border-[#1C1D22] text-[#C7C9D1]">
                       {alert.id}
                     </span>
                     <span
-                      className={`text-[11px] font-mono font-medium px-2 py-0.5 rounded ${
+                      className={`text-[11px] font-mono font-medium px-2 py-0.5 rounded-[4px] ${
                         alert.severity === 'CRITICAL'
                           ? 'bg-rose-500/20 text-rose-300'
                           : 'bg-amber-500/20 text-amber-300'
@@ -176,47 +176,47 @@ export const Alerts: React.FC<AlertsProps> = ({
                       {alert.severity}
                     </span>
                     <span
-                      className={`text-[11px] font-mono px-2 py-0.5 rounded ${
+                      className={`text-[11px] font-mono px-2 py-0.5 rounded-[4px] ${
                         alert.status === 'ACTIVE'
-                          ? 'bg-rose-950 text-rose-300 border border-rose-800/40'
-                          : 'bg-emerald-950 text-emerald-400 border border-emerald-800/40'
+                          ? 'bg-rose-950/60 text-rose-300 border border-rose-500/30'
+                          : 'bg-emerald-950/60 text-emerald-400 border border-emerald-500/30'
                       }`}
                     >
                       {alert.status}
                     </span>
-                    <span className="text-xs text-slate-500 font-mono">
+                    <span className="text-xs text-[#9194A1] font-mono">
                       Detected: {new Date(alert.createdAt).toLocaleTimeString()}
                     </span>
                   </div>
 
                   <h3 className="text-sm font-semibold text-white flex items-center gap-2">
                     <span>{alert.title}</span>
-                    <span className="text-xs font-normal text-slate-400 font-mono">
+                    <span className="text-xs font-normal text-[#9194A1] font-mono">
                       (Sliding Window: {alert.windowSeconds / 60}m)
                     </span>
                   </h3>
 
-                  <p className="text-xs text-slate-300 leading-relaxed font-sans">
+                  <p className="text-xs text-[#C7C9D1] leading-relaxed font-sans">
                     {alert.description}
                   </p>
 
                   <div className="flex flex-wrap items-center gap-3 pt-1 text-xs">
-                    <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-slate-950 border border-slate-800 text-slate-300">
-                      <User className="w-3.5 h-3.5 text-blue-400" />
+                    <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-[6px] bg-[#040406] border border-[#1C1D22] text-[#C7C9D1]">
+                      <User className="w-3.5 h-3.5 text-[#CC9166]" />
                       <span>Target Agent:</span>
                       <strong className="text-white font-mono">{alert.agentId}</strong>
                     </div>
 
-                    <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-slate-950 border border-slate-800 text-slate-300">
+                    <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-[6px] bg-[#040406] border border-[#1C1D22] text-[#C7C9D1]">
                       <Clock className="w-3.5 h-3.5 text-amber-400" />
                       <span>Denied Operations:</span>
                       <strong className="text-rose-400 font-mono">{alert.attemptCount}</strong>
                     </div>
                   </div>
 
-                  <div className="text-xs text-slate-400 bg-slate-950 p-2.5 rounded border border-slate-800">
-                    <span className="text-slate-500 font-mono">Latest Reason: </span>
-                    <span className="text-slate-300">{alert.latestReason}</span>
+                  <div className="text-xs text-[#9194A1] bg-[#040406] p-3 rounded-[6px] border border-[#1C1D22]">
+                    <span className="text-[#9194A1]/80 font-mono">Latest Reason: </span>
+                    <span className="text-[#E2E3E9]">{alert.latestReason}</span>
                   </div>
                 </div>
 
@@ -225,7 +225,7 @@ export const Alerts: React.FC<AlertsProps> = ({
                     <button
                       onClick={() => onResolveAlert(alert.id)}
                       disabled={isLoading}
-                      className="px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-medium flex items-center gap-1.5 transition-colors disabled:opacity-50"
+                      className="px-3.5 py-2 rounded-[8px] bg-[#121317] hover:bg-[#1C1D22] border border-[#1C1D22] hover:border-[#2E3038] text-[#C7C9D1] text-xs font-medium flex items-center gap-1.5 transition-colors disabled:opacity-50"
                     >
                       <Check className="w-3.5 h-3.5 text-emerald-400" />
                       <span>Mark Resolved</span>
@@ -239,27 +239,27 @@ export const Alerts: React.FC<AlertsProps> = ({
       )}
 
       {/* Educational Guidance Section */}
-      <div className="p-4 rounded-xl bg-slate-900/40 border border-slate-800 space-y-2 text-xs text-slate-400">
-        <div className="font-semibold text-slate-300 flex items-center gap-2">
-          <HelpCircle className="w-4 h-4 text-blue-400" />
+      <div className="p-4 rounded-[10px] bg-[#121317] border border-[#1C1D22] space-y-2 text-xs text-[#9194A1]">
+        <div className="font-semibold text-[#E2E3E9] flex items-center gap-2">
+          <HelpCircle className="w-4 h-4 text-[#CC9166]" />
           <span>How Statistical Anomaly Detection Works in SENTRIX</span>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
-          <div className="p-3 rounded-lg bg-slate-950 border border-slate-800/80 space-y-1">
-            <strong className="text-blue-400 font-semibold">1. Sliding Window Tracking</strong>
-            <p className="text-[11px] text-slate-400 leading-relaxed">
+          <div className="p-3.5 rounded-[8px] bg-[#040406] border border-[#1C1D22] space-y-1">
+            <strong className="text-[#CC9166] font-semibold">1. Sliding Window Tracking</strong>
+            <p className="text-[11px] text-[#9194A1] leading-relaxed">
               Tracks all denied and blocked actions per agent across a rolling 5-minute sliding window.
             </p>
           </div>
-          <div className="p-3 rounded-lg bg-slate-950 border border-slate-800/80 space-y-1">
+          <div className="p-3.5 rounded-[8px] bg-[#040406] border border-[#1C1D22] space-y-1">
             <strong className="text-amber-400 font-semibold">2. Threshold Tripwire (&ge;3 Denials)</strong>
-            <p className="text-[11px] text-slate-400 leading-relaxed">
+            <p className="text-[11px] text-[#9194A1] leading-relaxed">
               If an autonomous agent accumulates &ge;3 denials within 5 minutes, an active anomaly alert is flagged immediately.
             </p>
           </div>
-          <div className="p-3 rounded-lg bg-slate-950 border border-slate-800/80 space-y-1">
+          <div className="p-3.5 rounded-[8px] bg-[#040406] border border-[#1C1D22] space-y-1">
             <strong className="text-emerald-400 font-semibold">3. SecOps Resolution</strong>
-            <p className="text-[11px] text-slate-400 leading-relaxed">
+            <p className="text-[11px] text-[#9194A1] leading-relaxed">
               SecOps personnel inspect the affected agent, determine if rogue behavior is present, take administrative action, or resolve the alert.
             </p>
           </div>

@@ -57,13 +57,14 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   if (!isOpen) return null;
 
   const navItems = [
+    { id: 'attack-demo', label: 'Live Attack Demonstration & Exfiltration Containment', icon: ShieldAlert },
     { id: 'dashboard', label: 'Dashboard & Live Telemetry', icon: LayoutDashboard },
     { id: 'playground', label: 'Policy Gateway Console (Workbench)', icon: Terminal },
     { id: 'approvals', label: 'Quarantine Approvals Queue', icon: Clock },
     { id: 'alerts', label: 'Security Anomaly Alerts', icon: ShieldAlert },
-    { id: 'policies', label: 'Security Policies & Rule Controls', icon: ShieldCheck },
-    { id: 'audit', label: 'Compliance Audit Trail', icon: FileText },
-    { id: 'settings', label: 'System Configuration & Database Posture', icon: Settings }
+    { id: 'policies', label: 'Security Policies & Plain-English Rule Studio', icon: ShieldCheck },
+    { id: 'audit', label: 'Tamper-Evident Audit Ledger (SHA-256)', icon: FileText },
+    { id: 'settings', label: 'System Configuration & Security Posture', icon: Settings }
   ];
 
   const scenarios = [
@@ -88,22 +89,22 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   );
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-start justify-center pt-16 px-4">
-      <div className="bg-slate-900 border border-slate-800 rounded-xl max-w-xl w-full shadow-2xl overflow-hidden flex flex-col max-h-[80vh] animate-slide-up">
+    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-start justify-center pt-16 px-4">
+      <div className="bg-[#121317] border border-[#1C1D22] rounded-[10px] max-w-xl w-full shadow-2xl overflow-hidden flex flex-col max-h-[80vh] animate-slide-up">
         {/* Search Input Bar */}
-        <div className="p-3.5 border-b border-slate-800 flex items-center gap-3 bg-slate-950/60">
-          <Search className="w-4 h-4 text-slate-400 shrink-0" />
+        <div className="p-3.5 border-b border-[#1C1D22] flex items-center gap-3 bg-[#040406]">
+          <Search className="w-4 h-4 text-[#9194A1] shrink-0" />
           <input
             type="text"
             autoFocus
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Type a command or jump to page... (e.g., 'approvals', 'dlp', 'pause')"
-            className="w-full bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none"
+            className="w-full bg-transparent text-sm text-[#E2E3E9] placeholder-[#9194A1] focus:outline-none"
           />
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-white p-1 rounded hover:bg-slate-800 transition-colors"
+            className="text-[#9194A1] hover:text-white p-1 rounded-[4px] hover:bg-[#121317] transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
@@ -114,7 +115,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
           {/* Quick Scenarios */}
           {filteredScenarios.length > 0 && (
             <div className="space-y-1">
-              <div className="px-2 py-1 text-[10px] uppercase font-mono tracking-wider text-slate-500">
+              <div className="px-2 py-1 text-[10px] uppercase font-mono tracking-wider text-[#9194A1]">
                 1-Click Verification Scenarios
               </div>
               <div className="space-y-1">
@@ -125,21 +126,21 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                       onClose();
                       await onQuickRunScenario(s.idx);
                     }}
-                    className="w-full p-2.5 rounded-lg hover:bg-slate-800/80 border border-transparent hover:border-slate-700 text-left transition-colors flex items-center justify-between group"
+                    className="w-full p-2.5 rounded-[6px] hover:bg-[#17181F] border border-transparent hover:border-[#2E3038] text-left transition-colors flex items-center justify-between group"
                   >
                     <div className="flex items-center gap-2.5">
-                      <Sparkles className="w-4 h-4 text-amber-400 shrink-0 group-hover:scale-110 transition-transform" />
+                      <Sparkles className="w-4 h-4 text-[#CC9166] shrink-0 group-hover:scale-105 transition-transform" />
                       <div>
                         <div className="font-semibold text-white flex items-center gap-2">
                           <span>{s.label}</span>
-                          <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-slate-800 text-slate-300">
+                          <span className="text-[9px] font-mono px-1.5 py-0.2 rounded-[4px] bg-[#040406] border border-[#1C1D22] text-[#C7C9D1]">
                             {s.tag}
                           </span>
                         </div>
-                        <div className="text-[11px] text-slate-400 mt-0.5">{s.desc}</div>
+                        <div className="text-[11px] text-[#9194A1] mt-0.5">{s.desc}</div>
                       </div>
                     </div>
-                    <ArrowRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-white group-hover:translate-x-0.5 transition-all" />
+                    <ArrowRight className="w-3.5 h-3.5 text-[#9194A1] group-hover:text-white group-hover:translate-x-0.5 transition-all" />
                   </button>
                 ))}
               </div>
@@ -149,7 +150,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
           {/* Navigation */}
           {filteredNav.length > 0 && (
             <div className="space-y-1">
-              <div className="px-2 py-1 text-[10px] uppercase font-mono tracking-wider text-slate-500">
+              <div className="px-2 py-1 text-[10px] uppercase font-mono tracking-wider text-[#9194A1]">
                 Navigation
               </div>
               <div className="space-y-1">
@@ -162,15 +163,15 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                         onRouteChange(item.id as RouteId);
                         onClose();
                       }}
-                      className="w-full p-2.5 rounded-lg hover:bg-slate-800/80 border border-transparent hover:border-slate-700 text-left transition-colors flex items-center justify-between group"
+                      className="w-full p-2.5 rounded-[6px] hover:bg-[#17181F] border border-transparent hover:border-[#2E3038] text-left transition-colors flex items-center justify-between group"
                     >
                       <div className="flex items-center gap-2.5">
-                        <Icon className="w-4 h-4 text-blue-400 shrink-0" />
-                        <span className="font-medium text-slate-200 group-hover:text-white">
+                        <Icon className="w-4 h-4 text-[#CC9166] shrink-0" />
+                        <span className="font-medium text-[#C7C9D1] group-hover:text-white">
                           {item.label}
                         </span>
                       </div>
-                      <span className="text-[10px] font-mono text-slate-500 group-hover:text-slate-400">
+                      <span className="text-[10px] font-mono text-[#9194A1] group-hover:text-[#C7C9D1]">
                         Go &rarr;
                       </span>
                     </button>
@@ -181,8 +182,8 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
           )}
 
           {/* Emergency Controls */}
-          <div className="space-y-1 pt-1 border-t border-slate-800">
-            <div className="px-2 py-1 text-[10px] uppercase font-mono tracking-wider text-slate-500">
+          <div className="space-y-1 pt-1 border-t border-[#1C1D22]">
+            <div className="px-2 py-1 text-[10px] uppercase font-mono tracking-wider text-[#9194A1]">
               Emergency Administrative Action
             </div>
             <button
@@ -190,7 +191,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                 onClose();
                 await onToggleEmergencyPause(!isPaused, isPaused ? 'Resumed from Command Palette' : 'Emergency Stop from Command Palette');
               }}
-              className="w-full p-2.5 rounded-lg hover:bg-slate-800 border border-transparent hover:border-slate-700 text-left transition-colors flex items-center justify-between"
+              className="w-full p-2.5 rounded-[6px] hover:bg-rose-950/20 border border-transparent hover:border-rose-500/30 text-left transition-colors flex items-center justify-between"
             >
               <div className="flex items-center gap-2.5">
                 <AlertOctagon className="w-4 h-4 text-rose-400 shrink-0" />
@@ -198,7 +199,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                   {isPaused ? 'Resume Gateway Execution' : 'Activate Emergency Kill Switch (Hard-Stop)'}
                 </span>
               </div>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-950 text-rose-400 border border-rose-800/40">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-[4px] bg-rose-500/[0.08] text-rose-400 border border-rose-500/30">
                 {isPaused ? 'Currently Paused' : 'Ready'}
               </span>
             </button>
@@ -206,13 +207,13 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         </div>
 
         {/* Footer info */}
-        <div className="p-2.5 border-t border-slate-800 bg-slate-950/70 text-[11px] text-slate-500 flex items-center justify-between">
-          <div className="flex items-center gap-2 font-mono">
+        <div className="p-2.5 border-t border-[#1C1D22] bg-[#040406] text-[11px] text-[#9194A1] flex items-center justify-between">
+          <div className="flex items-center gap-2 font-mono text-[10px]">
             <span>Esc to close</span>
             <span>&bull;</span>
             <span>Ctrl + K anywhere</span>
           </div>
-          <span className="text-slate-400">SENTRIX AI Safety System</span>
+          <span className="text-[#9194A1] font-mono text-[10px]">SENTRIX AI Safety System</span>
         </div>
       </div>
     </div>

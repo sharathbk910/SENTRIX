@@ -59,26 +59,25 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       )}
 
-      <header className="h-16 border-b border-slate-800 bg-slate-900/90 backdrop-blur-md px-4 lg:px-6 flex items-center justify-between sticky top-0 z-40">
+      <header className="h-16 border-b border-[#1C1D22] bg-[#08080A]/90 backdrop-blur-md px-4 lg:px-6 flex items-center justify-between sticky top-0 z-40">
         <div className="flex items-center gap-6">
           <Logo size="md" />
 
           {/* Clean Environment Indicator */}
-          <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700/60 text-xs text-slate-300">
-            <span className={`w-2 h-2 rounded-full ${isPaused ? 'bg-rose-500' : 'bg-emerald-500'}`} />
-            <span className="font-medium">{isPaused ? 'Gateway: Paused' : 'Gateway: Active'}</span>
-            <span className="text-slate-600">&bull;</span>
-            <span className="text-slate-400 font-mono text-[11px]">Zero-Trust Enforcement</span>
+          <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-[#121317] border border-[#1C1D22] text-xs text-[#C7C9D1]">
+            <span className={`w-1.5 h-1.5 rounded-full ${isPaused ? 'bg-rose-500' : 'bg-emerald-400'}`} />
+            <span className="font-medium text-xs">{isPaused ? 'Gateway: Paused' : 'Gateway: Active'}</span>
+            <span className="text-[#2E3038]">&bull;</span>
+            <span className="text-[#9194A1] font-mono text-[10px] tracking-wider uppercase">Zero-Trust Enforcement</span>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-
+        <div className="flex items-center gap-2.5">
           {/* Anomaly Alerts Indicator */}
           {(stats?.activeAlertsCount ?? 0) > 0 && (
             <button
               onClick={() => onRouteChange('alerts')}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs font-medium hover:bg-rose-500/20 transition-colors"
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-[6px] bg-rose-500/[0.08] border border-rose-500/30 text-rose-300 text-xs font-medium hover:bg-rose-500/15 transition-colors"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
               <span>{stats?.activeAlertsCount} Alerts</span>
@@ -89,12 +88,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           {onOpenCommandPalette && (
             <button
               onClick={onOpenCommandPalette}
-              className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700/80 text-xs text-slate-300 hover:text-white transition-colors"
+              className="flex items-center gap-2 px-2.5 py-1.5 rounded-[6px] bg-[#121317] hover:bg-[#17181F] border border-[#1C1D22] hover:border-[#2E3038] text-xs text-[#9194A1] hover:text-[#E2E3E9] transition-colors"
               title="Open Command Palette (Ctrl+K)"
             >
-              <Search className="w-3.5 h-3.5 text-slate-400" />
-              <span className="hidden sm:inline text-slate-400">Quick Actions</span>
-              <kbd className="hidden md:inline px-1.5 py-0.5 rounded bg-slate-900 border border-slate-700 text-[10px] font-mono text-slate-400">
+              <Search className="w-3.5 h-3.5 text-[#9194A1]" />
+              <span className="hidden sm:inline text-[#9194A1]">Quick Actions</span>
+              <kbd className="hidden md:inline px-1.5 py-0.5 rounded-[4px] bg-[#040406] border border-[#1C1D22] text-[10px] font-mono text-[#9194A1]">
                 Ctrl K
               </kbd>
             </button>
@@ -103,7 +102,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Quick Guide for Judges / Evaluators */}
           <button
             onClick={() => setShowGuideModal(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600/15 hover:bg-blue-600/25 border border-blue-500/30 text-xs font-semibold text-blue-400 hover:text-blue-300 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-[6px] bg-[#CC9166]/10 hover:bg-[#CC9166]/20 border border-[#CC9166]/30 text-xs font-semibold text-[#CC9166] transition-colors"
           >
             <HelpCircle className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Demo Guide</span>
@@ -112,10 +111,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Emergency Pause Button */}
           <button
             onClick={() => setShowConfirmModal(true)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-semibold transition-all ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[6px] border text-xs font-semibold transition-all ${
               isPaused
                 ? 'bg-rose-600 text-white border-rose-500 hover:bg-rose-700'
-                : 'bg-slate-800 hover:bg-rose-950/40 text-slate-300 hover:text-rose-300 border-slate-700 hover:border-rose-500/50'
+                : 'bg-[#121317] hover:bg-rose-950/30 text-[#C7C9D1] hover:text-rose-300 border-[#1C1D22] hover:border-rose-500/40'
             }`}
           >
             <AlertOctagon className="w-3.5 h-3.5 text-rose-400" />
@@ -127,7 +126,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={onResetDemo}
             disabled={isResetting}
             title="Reset sandbox data and approvals"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs text-slate-300 hover:text-white transition-colors disabled:opacity-50"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-[6px] bg-[#121317] hover:bg-[#17181F] border border-[#1C1D22] hover:border-[#2E3038] text-xs text-[#9194A1] hover:text-[#E2E3E9] transition-colors disabled:opacity-50"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isResetting ? 'animate-spin' : ''}`} />
             <span className="hidden sm:inline">Reset Sandbox</span>
@@ -138,74 +137,83 @@ export const Navbar: React.FC<NavbarProps> = ({
       {/* Evaluator Demo Guide Modal */}
       {showGuideModal && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 rounded-xl border border-slate-800 max-w-lg w-full p-6 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <div className="flex items-center gap-2 text-white font-bold text-base">
-                <BookOpen className="w-5 h-5 text-blue-400" />
+          <div className="bg-[#121317] rounded-[10px] border border-[#1C1D22] max-w-lg w-full p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-[#1C1D22] pb-3">
+              <div className="flex items-center gap-2 text-white font-serif text-lg font-normal">
+                <BookOpen className="w-5 h-5 text-[#CC9166]" />
                 <span>SENTRIX &mdash; 60-Second Evaluator Guide</span>
               </div>
               <button
                 onClick={() => setShowGuideModal(false)}
-                className="text-slate-400 hover:text-white p-1"
+                className="text-[#9194A1] hover:text-white p-1"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="space-y-3 text-xs text-slate-300">
-              <p className="leading-relaxed text-slate-300">
-                SENTRIX is a <strong>deterministic AI Agent Security Gateway</strong> that intercepts and evaluates autonomous tool calls before execution.
+            <div className="space-y-3 text-xs text-[#C7C9D1]">
+              <p className="leading-relaxed">
+                SENTRIX is a <strong>deterministic AI Agent Security Gateway</strong> delivering five core safety controls for autonomous systems:
               </p>
 
-              <div className="space-y-2 pt-1">
-                <div className="p-3 rounded-lg bg-slate-950 border border-slate-800 space-y-1">
-                  <div className="font-semibold text-emerald-400 flex items-center gap-1.5">
-                    <span>1. Safe Operations (ALLOW)</span>
+              <div className="space-y-2 pt-1 max-h-72 overflow-y-auto">
+                <div className="p-3 rounded-[8px] bg-[#08080A] border border-rose-500/20 space-y-1">
+                  <div className="font-semibold text-rose-400 flex items-center gap-1.5 font-mono text-[11px]">
+                    <span>Feature 1 &bull; Live Attack Demonstration</span>
                   </div>
-                  <p className="text-slate-400 text-[11px]">
-                    Go to <strong>Policy Gateway</strong> &rarr; Select <strong>Preset 1 (Read Catalogue)</strong> &rarr; Click <strong>Evaluate & Enforce</strong>. Results in real catalogue data.
+                  <p className="text-[#9194A1] text-[11px] leading-relaxed">
+                    Interactive prompt injection & exfiltration attack scenario with side-by-side comparison (Unprotected vs SENTRIX Protected).
                   </p>
                 </div>
 
-                <div className="p-3 rounded-lg bg-slate-950 border border-slate-800 space-y-1">
-                  <div className="font-semibold text-rose-400 flex items-center gap-1.5">
-                    <span>2. Destructive Actions (BLOCK)</span>
+                <div className="p-3 rounded-[8px] bg-[#08080A] border border-[#1C1D22] space-y-1">
+                  <div className="font-semibold text-[#CC9166] flex items-center gap-1.5 font-mono text-[11px]">
+                    <span>Feature 2 &bull; Real-Time Action Dashboard</span>
                   </div>
-                  <p className="text-slate-400 text-[11px]">
-                    Select <strong>Preset 2 (Delete Ledger)</strong> &rarr; Blocked server-side. Protected financial data remains 100% intact.
+                  <p className="text-[#9194A1] text-[11px] leading-relaxed">
+                    Live telemetry feed with risk scores, matched policies, decision badges, and real-time polling.
                   </p>
                 </div>
 
-                <div className="p-3 rounded-lg bg-slate-950 border border-slate-800 space-y-1">
-                  <div className="font-semibold text-amber-300 flex items-center gap-1.5">
-                    <span>3. Quarantine & Human Approval</span>
+                <div className="p-3 rounded-[8px] bg-[#08080A] border border-[#1C1D22] space-y-1">
+                  <div className="font-semibold text-[#E2E3E9] flex items-center gap-1.5 font-mono text-[11px]">
+                    <span>Feature 3 &bull; Plain-English Policy Builder</span>
                   </div>
-                  <p className="text-slate-400 text-[11px]">
-                    Select <strong>Preset 3 (Transfer Dossier)</strong> &rarr; Quarantined with 10m TTL. Jump to <strong>Approval Queue</strong> to authorize or reject.
+                  <p className="text-[#9194A1] text-[11px] leading-relaxed">
+                    Author rules in ordinary English. Converts into structured policies with pre-activation test validation.
                   </p>
                 </div>
 
-                <div className="p-3 rounded-lg bg-slate-950 border border-slate-800 space-y-1">
-                  <div className="font-semibold text-blue-300 flex items-center gap-1.5">
-                    <span>4. DLP Secrets & Prompt Injections</span>
+                <div className="p-3 rounded-[8px] bg-[#08080A] border border-amber-500/20 space-y-1">
+                  <div className="font-semibold text-amber-300 flex items-center gap-1.5 font-mono text-[11px]">
+                    <span>Feature 4 &bull; Human Approval Workflow</span>
                   </div>
-                  <p className="text-slate-400 text-[11px]">
-                    Select <strong>Preset 5 & 6</strong> to see outbound API tokens masked and adversarial document overrides neutralized.
+                  <p className="text-[#9194A1] text-[11px] leading-relaxed">
+                    Guarantees quarantined actions cannot execute without human clearance. Auto-expiry TTL and replay protection.
+                  </p>
+                </div>
+
+                <div className="p-3 rounded-[8px] bg-[#08080A] border border-emerald-500/20 space-y-1">
+                  <div className="font-semibold text-emerald-400 flex items-center gap-1.5 font-mono text-[11px]">
+                    <span>Feature 5 &bull; Tamper-Evident Audit Ledger</span>
+                  </div>
+                  <p className="text-[#9194A1] text-[11px] leading-relaxed">
+                    SHA-256 cryptographic hash chaining linked to Genesis. Verify Integrity button and CSV/JSON export.
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="pt-2 border-t border-slate-800 flex items-center justify-between">
-              <span className="text-[11px] text-slate-500 font-mono">14 Automated Tests passing (npm test)</span>
+            <div className="pt-2 border-t border-[#1C1D22] flex items-center justify-between">
+              <span className="text-[10px] text-[#9194A1] font-mono uppercase tracking-wider">PS 2.1 AI Agent Safety</span>
               <button
                 onClick={() => {
                   setShowGuideModal(false);
-                  onRouteChange('playground');
+                  onRouteChange('attack-demo');
                 }}
-                className="px-3.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs flex items-center gap-1.5 transition-colors"
+                className="px-3.5 py-1.5 rounded-[6px] bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs flex items-center gap-1.5 transition-colors"
               >
-                <span>Launch Gateway Workbench</span>
+                <span>Launch Attack Demo</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
@@ -215,22 +223,22 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Confirmation Modal */}
       {showConfirmModal && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 rounded-xl border border-slate-800 max-w-md w-full p-6 space-y-4 shadow-xl">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <div className="flex items-center gap-2 text-white font-semibold text-base">
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-[#121317] rounded-[10px] border border-[#1C1D22] max-w-md w-full p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-[#1C1D22] pb-3">
+              <div className="flex items-center gap-2 text-white font-serif text-lg font-normal">
                 <AlertOctagon className="w-5 h-5 text-rose-500" />
                 <span>Confirm {isPaused ? 'Resume Gateway' : 'Emergency Agent Stop'}</span>
               </div>
               <button
                 onClick={() => setShowConfirmModal(false)}
-                className="text-slate-400 hover:text-white"
+                className="text-[#9194A1] hover:text-white"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <p className="text-xs text-slate-300 leading-relaxed">
+            <p className="text-xs text-[#C7C9D1] leading-relaxed">
               {isPaused ? (
                 <>
                   Resuming the gateway will restore normal agent action processing and deterministic policy enforcement.
@@ -243,7 +251,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </p>
 
             <div className="space-y-1.5">
-              <label className="text-xs text-slate-400 font-medium">
+              <label className="text-xs text-[#9194A1] font-medium">
                 Reason / Note:
               </label>
               <input
@@ -251,21 +259,21 @@ export const Navbar: React.FC<NavbarProps> = ({
                 value={confirmReason}
                 onChange={(e) => setConfirmReason(e.target.value)}
                 placeholder={isPaused ? "e.g. Incident verified and cleared" : "e.g. Investigating unexpected behavior"}
-                className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none focus:border-blue-500"
+                className="w-full px-3 py-2 rounded-[6px] bg-[#040406] border border-[#1C1D22] text-[#E2E3E9] text-xs focus:outline-none focus:border-[#CC9166]"
               />
             </div>
 
             <div className="pt-2 flex items-center justify-end gap-2.5">
               <button
                 onClick={() => setShowConfirmModal(false)}
-                className="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 text-xs hover:bg-slate-700"
+                className="px-3.5 py-1.5 rounded-[6px] bg-[#08080A] text-[#9194A1] hover:text-white text-xs border border-[#1C1D22] hover:border-[#2E3038] transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handlePauseConfirm}
                 disabled={isTogglingPause}
-                className={`px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 ${
+                className={`px-3.5 py-1.5 rounded-[6px] text-xs font-semibold flex items-center gap-1.5 transition-colors ${
                   isPaused
                     ? 'bg-emerald-600 hover:bg-emerald-500 text-white'
                     : 'bg-rose-600 hover:bg-rose-500 text-white'

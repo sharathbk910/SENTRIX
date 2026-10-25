@@ -2,6 +2,16 @@ export type PolicyDecision = 'ALLOW' | 'BLOCK' | 'REQUIRE_APPROVAL';
 
 export type ExecutionStatus = 'EXECUTED' | 'BLOCKED' | 'PENDING_APPROVAL' | 'REJECTED' | 'FAILED' | 'EXPIRED';
 
+export type RiskLevel = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+
+export type AuditEventType =
+  | 'ACTION_EVALUATION'
+  | 'APPROVAL_REQUEST'
+  | 'APPROVAL_DECISION'
+  | 'POLICY_CHANGE'
+  | 'EMERGENCY_STOP'
+  | 'ANOMALY_ALERT';
+
 export interface ActionPayload {
   tool: string;
   operation: string;
@@ -22,6 +32,11 @@ export interface Policy {
   decision: PolicyDecision;
   reason: string;
   enabled: boolean;
+  risk_score?: number;
+  conditions?: Record<string, any>;
+  natural_language_source?: string;
+  status?: 'ACTIVE' | 'DISABLED' | 'DRAFT';
+  version?: number;
   created_at: string;
 }
 
@@ -46,6 +61,12 @@ export interface ApprovalRequest {
   reviewed_by: string | null;
   created_at: string;
   expires_at: string;
+  risk_score?: number;
+  risk_level?: RiskLevel;
+  matched_policy_id?: string;
+  matched_policy_name?: string;
+  reviewer_notes?: string;
+  rejection_reason?: string;
   execution_result?: any;
 }
 
@@ -53,6 +74,7 @@ export interface AuditEvent {
   id: string;
   action_id: string;
   agent_id?: string;
+  event_type?: AuditEventType;
   tool: string;
   operation: string;
   resource: string;
@@ -61,6 +83,12 @@ export interface AuditEvent {
   reason: string;
   execution_status: ExecutionStatus;
   execution_output?: any;
+  risk_score?: number;
+  risk_level?: RiskLevel;
+  matched_policy_id?: string;
+  matched_policy_name?: string;
+  prev_hash?: string;
+  hash?: string;
   security_signals?: {
     sensitiveLeak?: LeakScanResult;
     promptInjection?: PromptInjectionResult;
@@ -69,6 +97,20 @@ export interface AuditEvent {
     emergencyPaused?: boolean;
   };
   created_at: string;
+}
+
+export interface IntegrityVerificationResult {
+  valid: boolean;
+  totalEvents: number;
+  verifiedEvents: number;
+  genesisHash: string;
+  latestHash?: string;
+  compromisedAtId?: string;
+  compromisedIndex?: number;
+  expectedHash?: string;
+  actualHash?: string;
+  message: string;
+  timestamp: string;
 }
 
 export interface LeakFinding {
@@ -125,6 +167,10 @@ export interface EvaluationResponse {
   executionOutput?: any;
   approvalId?: string;
   agentId?: string;
+  riskScore?: number;
+  riskLevel?: RiskLevel;
+  matchedPolicyId?: string;
+  matchedPolicyName?: string;
   securitySignals?: {
     sensitiveLeak?: LeakScanResult;
     promptInjection?: PromptInjectionResult;
@@ -148,5 +194,106 @@ export interface SystemStats {
   emergencyPaused: boolean;
   sensitiveLeaksBlockedCount: number;
   injectionsDetectedCount: number;
+  highRiskEventsCount?: number;
+  auditChainValid?: boolean;
   lastInterceptAt?: string;
+}
+
+export interface MockResources {
+  catalogue: Array<{
+    id: string;
+    name: string;
+    tier: string;
+    category: string;
+    description: string;
+    pricing: string;
+  }>;
+  financialRecords: Array<{
+    id: string;
+    account: string;
+    entity: string;
+    balanceUSD: number;
+    q1Revenue: number;
+    auditHash: string;
+    protectedStatus: 'LOCKED' | 'DELETED';
+  }>;
+  customerDossiers: Array<{
+    customerId: string;
+    organization: string;
+    securityClearance: string;
+    complianceTier: string;
+    transferredToExternal: boolean;
+    lastTransferTimestamp?: string;
+    destinationEndpoint?: string;
+  }>;
+}
+
+export interface PolicyTranslationResult {
+  success: boolean;
+  naturalLanguageInput: string;
+  proposedPolicy: {
+    name: string;
+    tool: string;
+    operation: string;
+    resource_pattern: string;
+    decision: PolicyDecision;
+    reason: string;
+    risk_score: number;
+    conditions?: Record<string, any>;
+    requires_approval: boolean;
+  };
+  confidenceScore: number;
+  explanation: string;
+  validationErrors?: string[];
+  testScenarios: Array<{
+    name: string;
+    payload: ActionPayload;
+    expectedDecision: PolicyDecision;
+    rationale: string;
+  }>;
+}
+
+export interface AttackDemoStep {
+  stepIndex: number;
+  phase:
+    | 'AGENT_TASK'
+    | 'INJECTION_PROMPT'
+    | 'PROPOSED_ACTION'
+    | 'GATEWAY_INTERCEPT'
+    | 'POLICY_EVALUATION'
+    | 'DECISION_ENFORCEMENT'
+    | 'EXECUTION_RESULT'
+    | 'AUDIT_RECORD';
+  title: string;
+  detail: string;
+  status: 'PENDING' | 'RUNNING' | 'SUCCESS' | 'BLOCKED' | 'FLAGGED';
+  metadata?: Record<string, any>;
+}
+
+export interface AttackDemoExecution {
+  scenarioId: string;
+  scenarioTitle: string;
+  normalTask: string;
+  injectionPayload: string;
+  proposedAction: ActionPayload;
+  sentrixEvaluation: EvaluationResponse;
+  unprotectedOutcome: {
+    actionExecuted: boolean;
+    dataExfiltrated: boolean;
+    compromisedRecordsCount: number;
+    leakedDestination: string;
+    message: string;
+  };
+  protectedOutcome: {
+    actionExecuted: boolean;
+    dataExfiltrated: boolean;
+    compromisedRecordsCount: number;
+    containmentLayer: string;
+    riskScore: number;
+    riskLevel: RiskLevel;
+    matchedPolicy: string;
+    message: string;
+  };
+  steps: AttackDemoStep[];
+  timestamp: string;
 }

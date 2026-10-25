@@ -24,10 +24,10 @@ export class SensitiveDataScanner {
   private patterns = [
     {
       category: 'API_KEY' as const,
-      name: 'Stripe API Key',
-      regex: /\b(sk_(?:live|test)_[0-9a-zA-Z]{20,})\b/g,
+      name: 'API Key & Token',
+      regex: /\b(sk_(?:live|test)_[0-9a-zA-Z]{20,}|sentrix_mock_key_[0-9a-zA-Z]{10,})\b/g,
       severity: 'CRITICAL' as const,
-      reason: 'Live or test payment processor secret key detected in payload.'
+      reason: 'Live or test payment processor secret key or API token detected in payload.'
     },
     {
       category: 'API_KEY' as const,

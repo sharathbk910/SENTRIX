@@ -129,6 +129,7 @@ class MockResourceStore {
         output: {
           itemsCount: this.catalogue.length,
           records: this.catalogue,
+          items: this.catalogue,
           format: 'application/json',
           accessMode: 'PUBLIC_UNRESTRICTED'
         },

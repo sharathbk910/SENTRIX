@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/layout/Navbar';
 import { Sidebar, RouteId } from './components/layout/Sidebar';
 import { Dashboard } from './pages/Dashboard';
+import { AttackDemo } from './pages/AttackDemo';
 import { Playground } from './pages/Playground';
 import { Policies } from './pages/Policies';
 import { Approvals } from './pages/Approvals';
@@ -274,7 +275,7 @@ export function App() {
         description: 'Export customer archive accompanied by secret API credentials and DB passwords',
         parameters: {
           destinationVault: 'https://external-dump.corp',
-          apiToken: 'sk_test_51MockCustomerExportKey998877',
+          apiToken: 'sentrix_mock_key_51CustomerExportKey998877',
           masterKey: 'password: SuperAdminSecretPass#2026'
         }
       },
@@ -364,7 +365,7 @@ export function App() {
   const activeAlertsCount = alerts.filter((a) => a.status === 'ACTIVE').length;
 
   return (
-    <div className="min-h-screen bg-sentrix-bg text-slate-100 flex flex-col font-sans selection:bg-blue-600 selection:text-white">
+    <div className="min-h-screen bg-[#08080A] text-[#E2E3E9] flex flex-col font-sans selection:bg-[#CC9166]/25 selection:text-white">
       {/* Top Navbar with Emergency Pause controls & Kill Switch */}
       <Navbar
         stats={stats}
@@ -398,6 +399,13 @@ export function App() {
 
         {/* Dynamic Route View */}
         <main className="flex-1 p-4 lg:p-8 max-w-7xl mx-auto w-full overflow-y-auto">
+          {currentRoute === 'attack-demo' && (
+            <AttackDemo
+              onRouteChange={setCurrentRoute}
+              onRefreshData={refreshAllData}
+            />
+          )}
+
           {currentRoute === 'dashboard' && (
             <Dashboard
               stats={stats}
@@ -405,6 +413,7 @@ export function App() {
               onRouteChange={setCurrentRoute}
               onQuickRunScenario={handleQuickRunScenario}
               isEvaluating={isEvaluating}
+              onRefreshData={refreshAllData}
             />
           )}
 
@@ -423,6 +432,7 @@ export function App() {
               conflicts={conflicts}
               onTogglePolicy={handleTogglePolicy}
               onTestPolicy={handleTestPolicy}
+              onRefreshPolicies={refreshAllData}
               isLoading={isLoading}
             />
           )}
@@ -435,6 +445,7 @@ export function App() {
               onRouteChange={setCurrentRoute}
               onGenerateSampleApproval={handleGenerateSampleApproval}
               isLoading={isLoading}
+              emergencyPaused={pauseState?.isPaused || false}
             />
           )}
 
@@ -449,7 +460,7 @@ export function App() {
           )}
 
           {currentRoute === 'audit' && (
-            <Audit events={auditEvents} isLoading={isLoading} />
+            <Audit events={auditEvents} isLoading={isLoading} onRefreshAudit={refreshAllData} />
           )}
 
           {currentRoute === 'settings' && (
@@ -463,26 +474,26 @@ export function App() {
         {toasts.map((toast) => (
           <div
             key={toast.id}
-            className={`pointer-events-auto p-3.5 rounded-lg border shadow-xl flex items-start justify-between gap-3 transition-all duration-200 animate-slide-up ${
+            className={`pointer-events-auto p-3.5 rounded-[10px] border shadow-2xl flex items-start justify-between gap-3 transition-all duration-200 animate-slide-up ${
               toast.type === 'success'
-                ? 'bg-slate-900 border-emerald-500/40 text-emerald-300'
+                ? 'bg-[#121317] border-emerald-500/30 text-emerald-300'
                 : toast.type === 'error'
-                ? 'bg-slate-900 border-rose-500/40 text-rose-300'
+                ? 'bg-[#121317] border-rose-500/30 text-rose-300'
                 : toast.type === 'warning'
-                ? 'bg-slate-900 border-amber-500/40 text-amber-300'
-                : 'bg-slate-900 border-blue-500/40 text-blue-300'
+                ? 'bg-[#121317] border-amber-500/30 text-amber-300'
+                : 'bg-[#121317] border-[#CC9166]/40 text-[#CC9166]'
             }`}
           >
             <div className="flex items-start gap-2.5">
               {toast.type === 'success' && <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />}
               {toast.type === 'error' && <AlertOctagon className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />}
               {toast.type === 'warning' && <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />}
-              {toast.type === 'info' && <Info className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />}
+              {toast.type === 'info' && <Info className="w-4 h-4 text-[#CC9166] shrink-0 mt-0.5" />}
               <div>
                 <div className="text-xs font-semibold tracking-wide text-white">
                   {toast.title}
                 </div>
-                <div className="text-xs font-sans mt-0.5 text-slate-300 leading-relaxed">
+                <div className="text-xs font-sans mt-0.5 text-[#C7C9D1] leading-relaxed">
                   {toast.message}
                 </div>
               </div>
@@ -490,7 +501,7 @@ export function App() {
 
             <button
               onClick={() => removeToast(toast.id)}
-              className="text-slate-400 hover:text-white p-0.5 shrink-0"
+              className="text-[#9194A1] hover:text-white p-0.5 shrink-0 transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
