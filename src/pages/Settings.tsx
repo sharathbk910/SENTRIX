@@ -44,18 +44,18 @@ export const Settings: React.FC<SettingsProps> = ({ onResetDemo, isResetting }) 
       <div className="border-b border-[#1C1D22] pb-5">
         <h1 className="font-serif text-2xl text-white tracking-tight">Security Posture &amp; Enforcement</h1>
         <p className="text-xs text-[#9194A1] mt-1 max-w-2xl leading-relaxed">
-          Real-time status of the zero-trust evaluation boundary, resource protection guarantees, and isolation posture.
+          Real-time status of the security evaluation boundary, resource protection guarantees, and isolation posture.
         </p>
       </div>
 
       {/* Enforcement & Isolation Architecture Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Zero-Trust Policy Authority */}
+        {/* Policy Authority */}
         <div className="enterprise-card p-5 space-y-3.5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-sm font-semibold text-white">
               <Shield className="w-4 h-4 text-emerald-400" />
-              <span>Zero-Trust Policy Authority</span>
+              <span>Pre-Execution Policy Authority</span>
             </div>
             <span className="text-[11px] font-mono px-2 py-0.5 rounded-[4px] bg-emerald-950/20 border border-emerald-500/30 text-emerald-400 font-medium">
               ACTIVE &amp; ENFORCING
@@ -73,11 +73,11 @@ export const Settings: React.FC<SettingsProps> = ({ onResetDemo, isResetting }) 
             </div>
             <div className="flex items-center justify-between py-1.5 border-b border-[#1C1D22]">
               <span className="text-[#9194A1]">Default Action Strategy:</span>
-              <span className="font-mono text-[#CC9166]">Strict Deny-by-Default</span>
+              <span className="font-mono text-[#CC9166]">Block Unknown Actions</span>
             </div>
             <div className="flex items-center justify-between py-1.5">
               <span className="text-[#9194A1]">Policy Conflict Resolution:</span>
-              <span className="font-mono text-amber-400">Deny-First Fallback</span>
+              <span className="font-mono text-amber-400">Block First on Conflict</span>
             </div>
           </div>
 

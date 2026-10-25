@@ -96,12 +96,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           <Logo size="md" className="hidden sm:flex" />
           <Logo size="sm" className="sm:hidden" />
 
-          {/* Clean Environment Indicator */}
+          {/* Status Indicator */}
           <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-[#121317] border border-[#1C1D22] text-xs text-[#C7C9D1]">
             <span className={`w-1.5 h-1.5 rounded-full ${isPaused ? 'bg-rose-500' : 'bg-emerald-400'}`} />
-            <span className="font-medium text-xs">{isPaused ? 'Gateway: Paused' : 'Gateway: Active'}</span>
-            <span className="text-[#2E3038]">&bull;</span>
-            <span className="text-[#9194A1] font-mono text-[10px] tracking-wider uppercase">Zero-Trust Enforcement</span>
+            <span className="font-medium text-xs">{isPaused ? 'Protection: Paused' : 'Protection: Active'}</span>
           </div>
         </div>
 

@@ -217,10 +217,10 @@ export const Dashboard: React.FC<DashboardProps> = ({
             { label: 'Safe Read', tag: 'ALLOW', colorClass: 'text-emerald-400' },
             { label: 'Delete Ledger', tag: 'BLOCK', colorClass: 'text-rose-400' },
             { label: 'Exfiltration', tag: 'APPROVAL', colorClass: 'text-amber-300' },
-            { label: 'Unknown Tool', tag: 'DENY-DEF', colorClass: 'text-rose-400' },
-            { label: 'Secret Leak', tag: 'DLP BLOCK', colorClass: 'text-[#CC9166]' },
-            { label: 'Prompt Injection', tag: 'INJECTION', colorClass: 'text-[#CC9166]' },
-            { label: 'Denial Burst', tag: 'ANOMALY', colorClass: 'text-amber-300' }
+            { label: 'Unknown Tool', tag: 'BLOCK', colorClass: 'text-rose-400' },
+            { label: 'Secret Leak', tag: 'BLOCK', colorClass: 'text-rose-400' },
+            { label: 'Prompt Injection', tag: 'BLOCK', colorClass: 'text-rose-400' },
+            { label: 'Denial Burst', tag: 'ALERT', colorClass: 'text-amber-300' }
           ].map((sc, i) => (
             <button
               key={i}

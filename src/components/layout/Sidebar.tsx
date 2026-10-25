@@ -55,8 +55,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       id: 'attack-demo',
       label: 'Live Attack Demo',
       icon: ShieldAlert,
-      badge: 'DEMO 1',
-      badgeAlert: true,
+      badge: null,
       description: 'Prompt Injection Defense'
     },
     {
@@ -85,7 +84,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       id: 'audit' as RouteId,
       label: 'Audit Ledger',
       icon: FileText,
-      badge: 'SHA-256',
+      badge: null,
       description: 'Tamper-Evident Hash Chain'
     }
   ];
@@ -177,15 +176,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <aside className="hidden md:block w-64 bg-[#040406] border-r border-[#1C1D22] p-4 space-y-6 shrink-0 h-[calc(100vh-4rem)] sticky top-16 overflow-y-auto">
         {renderNavGroup('Core Capabilities', coreFeaturesNav)}
         {renderNavGroup('Security Tools', toolsNav)}
-
-        {/* Gateway Status Indicator */}
-        <div className="p-3 rounded-[8px] bg-[#121317] border border-[#1C1D22] flex items-center justify-between text-[11px] font-mono text-[#9194A1]">
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-            <span className="text-[#E2E3E9] font-medium">Fail-Closed Gateway</span>
-          </div>
-          <span className="text-[#CC9166] font-semibold text-[10px]">Zero-Trust</span>
-        </div>
       </aside>
 
       {/* Mobile Off-Canvas Overlay Backdrop */}
@@ -216,15 +206,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         {renderNavGroup('Core Capabilities', coreFeaturesNav)}
         {renderNavGroup('Security Tools', toolsNav)}
-
-        {/* Gateway Status Indicator */}
-        <div className="p-3 rounded-[8px] bg-[#121317] border border-[#1C1D22] flex items-center justify-between text-[11px] font-mono text-[#9194A1]">
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-            <span className="text-[#E2E3E9] font-medium">Fail-Closed Gateway</span>
-          </div>
-          <span className="text-[#CC9166] font-semibold text-[10px]">Zero-Trust</span>
-        </div>
       </div>
     </>
   );

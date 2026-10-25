@@ -233,11 +233,11 @@ export const Policies: React.FC<PoliciesProps> = ({
         <div className="flex items-center gap-2">
           <Lock className="w-3.5 h-3.5 text-[#CC9166]" />
           <span>
-            <strong className="text-white">Fail-Closed Guarantee:</strong> Any action not explicitly permitted by an active rule is automatically blocked.
+            <strong className="text-white">Safety Principle:</strong> Only permitted actions are allowed. Any unlisted action is blocked automatically.
           </span>
         </div>
         <span className="font-mono text-[10px] text-emerald-400 px-2 py-0.5 rounded bg-emerald-950/20 border border-emerald-500/30 self-start sm:self-auto">
-          FAIL-CLOSED ACTIVE
+          PROTECTED BY DEFAULT
         </span>
       </div>
 
