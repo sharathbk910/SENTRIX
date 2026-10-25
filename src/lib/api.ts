@@ -45,17 +45,15 @@ export class ApiClientError extends Error {
   }
 }
 
+import { config } from '../config/env';
+
 /**
- * Resolve the API base URL from Vite environment variables.
+ * Resolve the API base URL from centralized configuration.
  * - Defaults to same-origin '/api' (standard for Vercel Serverless and Vite local proxy).
  * - Can be overridden via VITE_API_URL for separate standalone backend services.
  */
 export function getApiBaseUrl(): string {
-  const envUrl = (import.meta as any).env?.VITE_API_URL;
-  if (typeof envUrl === 'string' && envUrl.trim() !== '') {
-    return envUrl.trim().replace(/\/+$/, '');
-  }
-  return '/api';
+  return config.apiUrl;
 }
 
 /**

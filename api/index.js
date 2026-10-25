@@ -2,7 +2,10 @@
 import express from "express";
 import cors from "cors";
 
-// server/routes/api.ts
+// server/routes/index.ts
+import { Router as Router7 } from "express";
+
+// server/routes/actions.routes.ts
 import { Router } from "express";
 
 // server/policy-engine/conflictDetector.ts
@@ -1954,9 +1957,9 @@ var SecurityGatewayService = class {
 };
 var securityGatewayService = new SecurityGatewayService();
 
-// server/routes/api.ts
-var apiRouter = Router();
-apiRouter.post("/actions/evaluate", (req, res) => {
+// server/routes/actions.routes.ts
+var actionsRouter = Router();
+actionsRouter.post("/evaluate", (req, res) => {
   try {
     const {
       tool,
@@ -1999,7 +2002,11 @@ apiRouter.post("/actions/evaluate", (req, res) => {
     });
   }
 });
-apiRouter.get("/policies", (_req, res) => {
+
+// server/routes/policies.routes.ts
+import { Router as Router2 } from "express";
+var policiesRouter = Router2();
+policiesRouter.get("/", (_req, res) => {
   try {
     const policies = securityGatewayService.getPolicies();
     res.json({ success: true, policies });
@@ -2007,7 +2014,7 @@ apiRouter.get("/policies", (_req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
-apiRouter.post("/policies/translate", (req, res) => {
+policiesRouter.post("/translate", (req, res) => {
   try {
     const { input } = req.body || {};
     if (!input || typeof input !== "string") {
@@ -2024,7 +2031,7 @@ apiRouter.post("/policies/translate", (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
-apiRouter.post("/policies", (req, res) => {
+policiesRouter.post("/", (req, res) => {
   try {
     const { name, tool, operation, resource_pattern, decision, reason, risk_score, conditions, natural_language_source } = req.body || {};
     if (!name || !tool || !operation || !resource_pattern || !decision) {
@@ -2062,7 +2069,7 @@ apiRouter.post("/policies", (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
-apiRouter.delete("/policies/:id", (req, res) => {
+policiesRouter.delete("/:id", (req, res) => {
   try {
     const success = securityGatewayService.deletePolicy(req.params.id);
     if (!success) {
@@ -2075,15 +2082,7 @@ apiRouter.delete("/policies/:id", (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
-apiRouter.get("/policy-conflicts", (_req, res) => {
-  try {
-    const conflicts = securityGatewayService.getPolicyConflicts();
-    res.json({ success: true, conflicts });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-apiRouter.patch("/policies/:id/toggle", (req, res) => {
+policiesRouter.patch("/:id/toggle", (req, res) => {
   try {
     const updated = securityGatewayService.togglePolicy(req.params.id);
     if (!updated) {
@@ -2096,7 +2095,11 @@ apiRouter.patch("/policies/:id/toggle", (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
-apiRouter.get("/approvals", (_req, res) => {
+
+// server/routes/approvals.routes.ts
+import { Router as Router3 } from "express";
+var approvalsRouter = Router3();
+approvalsRouter.get("/", (_req, res) => {
   try {
     const approvals = securityGatewayService.getApprovals();
     res.json({ success: true, approvals });
@@ -2104,7 +2107,7 @@ apiRouter.get("/approvals", (_req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
-apiRouter.post("/approvals/:id/decision", (req, res) => {
+approvalsRouter.post("/:id/decision", (req, res) => {
   try {
     const { id } = req.params;
     const { decision, reviewer, rejectionReason } = req.body || {};
@@ -2122,7 +2125,7 @@ apiRouter.post("/approvals/:id/decision", (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
-apiRouter.post("/approvals/:id/simulate-expiry", (req, res) => {
+approvalsRouter.post("/:id/simulate-expiry", (req, res) => {
   try {
     const { id } = req.params;
     const approvals = securityGatewayService.getApprovals();
@@ -2138,53 +2141,11 @@ apiRouter.post("/approvals/:id/simulate-expiry", (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
-apiRouter.get("/alerts", (_req, res) => {
-  try {
-    const alerts = securityGatewayService.getAlerts();
-    res.json({ success: true, alerts });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-apiRouter.post("/alerts/:id/resolve", (req, res) => {
-  try {
-    const success = securityGatewayService.resolveAlert(req.params.id);
-    if (!success) {
-      res.status(404).json({ success: false, message: "Alert not found" });
-      return;
-    }
-    res.json({ success: true, message: "Alert marked as RESOLVED" });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-apiRouter.get("/emergency-pause", (_req, res) => {
-  try {
-    const pauseState = securityGatewayService.getEmergencyPauseState();
-    res.json({
-      success: true,
-      pauseState,
-      isPaused: pauseState.isPaused,
-      paused: pauseState.isPaused
-    });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-apiRouter.post("/emergency-pause/toggle", (req, res) => {
-  try {
-    const { pause, operator, reason } = req.body || {};
-    const updated = securityGatewayService.setEmergencyPause(
-      !!pause,
-      operator || "SecOps Admin",
-      reason || (pause ? "Emergency halt ordered by administrator" : "Resumed by administrator")
-    );
-    res.json({ success: true, pauseState: updated });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-apiRouter.get("/audit", (_req, res) => {
+
+// server/routes/audit.routes.ts
+import { Router as Router4 } from "express";
+var auditRouter = Router4();
+auditRouter.get("/", (_req, res) => {
   try {
     const auditEvents = securityGatewayService.getAuditEvents();
     res.json({ success: true, events: auditEvents });
@@ -2200,9 +2161,9 @@ var verifyHandler = (_req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
-apiRouter.get("/audit/verify", verifyHandler);
-apiRouter.post("/audit/verify", verifyHandler);
-apiRouter.post("/audit/simulate-tamper", (req, res) => {
+auditRouter.get("/verify", verifyHandler);
+auditRouter.post("/verify", verifyHandler);
+auditRouter.post("/simulate-tamper", (req, res) => {
   try {
     const { eventId } = req.body || {};
     const result = securityGatewayService.simulateAuditTamper(eventId);
@@ -2219,7 +2180,11 @@ apiRouter.post("/audit/simulate-tamper", (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
-apiRouter.get("/attack-demo/scenario", (_req, res) => {
+
+// server/routes/attackDemo.routes.ts
+import { Router as Router5 } from "express";
+var attackDemoRouter = Router5();
+attackDemoRouter.get("/scenario", (_req, res) => {
   try {
     const scenario = securityGatewayService.getAttackScenario();
     res.json({ success: true, scenario });
@@ -2227,7 +2192,7 @@ apiRouter.get("/attack-demo/scenario", (_req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
-apiRouter.post("/attack-demo/run", (_req, res) => {
+attackDemoRouter.post("/run", (_req, res) => {
   try {
     const execution = securityGatewayService.runAttackDemo();
     res.json({ success: true, execution });
@@ -2235,7 +2200,65 @@ apiRouter.post("/attack-demo/run", (_req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
-apiRouter.get("/stats", (_req, res) => {
+
+// server/routes/system.routes.ts
+import { Router as Router6 } from "express";
+var systemRouter = Router6();
+systemRouter.get("/alerts", (_req, res) => {
+  try {
+    const alerts = securityGatewayService.getAlerts();
+    res.json({ success: true, alerts });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+systemRouter.post("/alerts/:id/resolve", (req, res) => {
+  try {
+    const success = securityGatewayService.resolveAlert(req.params.id);
+    if (!success) {
+      res.status(404).json({ success: false, message: "Alert not found" });
+      return;
+    }
+    res.json({ success: true, message: "Alert marked as RESOLVED" });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+systemRouter.get("/emergency-pause", (_req, res) => {
+  try {
+    const pauseState = securityGatewayService.getEmergencyPauseState();
+    res.json({
+      success: true,
+      pauseState,
+      isPaused: pauseState.isPaused,
+      paused: pauseState.isPaused
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+systemRouter.post("/emergency-pause/toggle", (req, res) => {
+  try {
+    const { pause, operator, reason } = req.body || {};
+    const updated = securityGatewayService.setEmergencyPause(
+      !!pause,
+      operator || "SecOps Admin",
+      reason || (pause ? "Emergency halt ordered by administrator" : "Resumed by administrator")
+    );
+    res.json({ success: true, pauseState: updated });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+systemRouter.get("/policy-conflicts", (_req, res) => {
+  try {
+    const conflicts = securityGatewayService.getPolicyConflicts();
+    res.json({ success: true, conflicts });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+systemRouter.get("/stats", (_req, res) => {
   try {
     const stats = securityGatewayService.getStats();
     res.json({ success: true, stats });
@@ -2243,7 +2266,7 @@ apiRouter.get("/stats", (_req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
-apiRouter.get("/resources", (_req, res) => {
+systemRouter.get("/resources", (_req, res) => {
   try {
     const resources = securityGatewayService.getMockResources();
     res.json({ success: true, resources });
@@ -2251,7 +2274,7 @@ apiRouter.get("/resources", (_req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
-apiRouter.post("/reset", (_req, res) => {
+systemRouter.post("/reset", (_req, res) => {
   try {
     securityGatewayService.resetDemo();
     res.json({ success: true, message: "Demo environment reset to baseline state." });
@@ -2259,6 +2282,15 @@ apiRouter.post("/reset", (_req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
+
+// server/routes/index.ts
+var apiRouter = Router7();
+apiRouter.use("/actions", actionsRouter);
+apiRouter.use("/policies", policiesRouter);
+apiRouter.use("/approvals", approvalsRouter);
+apiRouter.use("/audit", auditRouter);
+apiRouter.use("/attack-demo", attackDemoRouter);
+apiRouter.use("/", systemRouter);
 
 // server/app.ts
 var app = express();
