@@ -62,7 +62,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     { id: 'playground', label: 'Policy Gateway Console (Workbench)', icon: Terminal },
     { id: 'approvals', label: 'Quarantine Approvals Queue', icon: Clock },
     { id: 'alerts', label: 'Security Anomaly Alerts', icon: ShieldAlert },
-    { id: 'policies', label: 'Security Policies & Plain-English Rule Studio', icon: ShieldCheck },
+    { id: 'policies', label: 'Security Rules — Allowed, Blocked & Approval Rules', icon: ShieldCheck },
     { id: 'audit', label: 'Tamper-Evident Audit Ledger (SHA-256)', icon: FileText },
     { id: 'settings', label: 'System Configuration & Security Posture', icon: Settings }
   ];

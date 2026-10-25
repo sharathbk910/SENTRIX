@@ -62,10 +62,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
     },
     {
       id: 'policies' as RouteId,
-      label: 'Security Policies',
+      label: 'Security Rules',
       icon: ShieldCheck,
-      badge: 'NLP Studio',
-      description: 'Plain-English Policy Rules'
+      badge: null,
+      description: 'Protection Rules & Validation'
     },
     {
       id: 'approvals' as RouteId,
