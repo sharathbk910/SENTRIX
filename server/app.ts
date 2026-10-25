@@ -19,7 +19,7 @@ const healthHandler = (_req: express.Request, res: express.Response) => {
   res.status(200).json({
     status: 'HEALTHY',
     service: 'SENTRIX AI Agent Security Gateway',
-    version: '1.0.0-hackathon',
+    version: '2.4.0',
     engine: 'Deterministic Deny-By-Default Policy Engine',
     timestamp: new Date().toISOString()
   });

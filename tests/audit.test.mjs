@@ -2,7 +2,7 @@
  * SENTRIX AI AGENT SECURITY GATEWAY — COMPREHENSIVE TEST SUITE
  * Problem Statement: PS 2.1 — AI Agent Safety and Control
  * 
- * Verifies all 5 Core Hackathon Features:
+ * Verifies all 5 Core Security Capabilities:
  * 1. Live Attack Demonstration (Comparative Prompt Injection & Exfiltration Defense)
  * 2. Real-Time Agent Action Dashboard (Telemetry, KPIs, and Risk Scoring)
  * 3. Plain-English Security Policy Builder (NLP Translation, Validation, Test Scenarios, Activation)
